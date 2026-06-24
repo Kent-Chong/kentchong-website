@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Automation for Mid-to-Senior Leaders | Kent Chong</title>
+  <meta name="description" content="Certified training courses on AI adoption for professionals in technical and non-technical leadership roles. AI Automation, Data Engineering, Data Science, and Vibe Coding." />
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700;800;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="article.css" />
+</head>
+<body>
+
+  <div class="read-prog" id="prog"></div>
+
+  <nav class="art-nav">
+    <a href="../index.html" class="back">
+      <span class="arr">&#8592;</span>
+      <span>Kent Chong</span>
+    </a>
+    <span class="nav-cat">Workshop &middot; LEAD</span>
+  </nav>
+
+  <main class="art-main">
+    <header class="art-header">
+      <div class="art-meta">
+        <span class="cat">Workshop &middot; LEAD</span>
+        <span class="sep">/</span>
+        <span>Available now</span>
+      </div>
+      <h1 class="art-title">AI Automation for Mid-to-Senior Leaders</h1>
+    </header>
+
+    <hr class="art-divider" />
+
+    <article class="art-body">
+
+      <p>Most senior leaders I work with come into AI training with the same starting point: they know AI is relevant to their work, but they have not been able to get traction on actually using it.</p>
+
+      <p>Not because they lack curiosity. Most of them are curious. It is because the resources available assume either too little or too much. The LinkedIn post level does not help a Director of Operations figure out what to automate first. The academic research level does not help a VP of Finance decide whether the AI tool their team wants to buy is actually solving a real problem.</p>
+
+      <p>The training I run at LEAD is designed to close that gap.</p>
+
+      <h2>What this is</h2>
+
+      <p>A series of certified training courses on AI adoption for professionals in technical and non-technical leadership roles. The courses are hands-on, grounded in real workflows, and designed to produce people who can make informed decisions about AI in their organizations, not just talk about it.</p>
+
+      <div class="course-list">
+        <div class="course-item">
+          <span class="course-name">AI Automation</span>
+          <p class="course-desc">Where automation fits, where it does not, and how to design workflows that are reliable in production. Covers prompt design, evaluation, integration with existing systems, and governance.</p>
+        </div>
+        <div class="course-item">
+          <span class="course-name">AI for Data Engineering</span>
+          <p class="course-desc">How AI tools change the way data pipelines get built and maintained. Covers AI-assisted development, language model integration into data workflows, and the practical considerations around using AI at the data layer.</p>
+        </div>
+        <div class="course-item">
+          <span class="course-name">AI for Data Science and Analytics</span>
+          <p class="course-desc">How analysts and data scientists can use AI to move faster without sacrificing rigor. Covers AI-assisted analysis, automated reporting, insight generation, and the evaluation of AI outputs.</p>
+        </div>
+        <div class="course-item">
+          <span class="course-name">AI Vibe Coding</span>
+          <p class="course-desc">Building functional tools and prototypes with AI assistance, even if you do not come from a software background. Covers prompt-driven development, iteration, and knowing when to stop.</p>
+        </div>
+      </div>
+
+      <h2>Who it is for</h2>
+
+      <p>These courses are built for people who are already doing professional work and want to add AI capability to what they do, not people who want to start from scratch. You do not need a computer science background. You do need to show up with real problems from your actual work, because that is what we use.</p>
+
+      <p>The sessions run with corporate cohorts, typically through L&amp;D partnerships with organizations sending teams. Individual enrollment is available depending on session availability.</p>
+
+      <h2>How it works</h2>
+
+      <p>Each course runs in person, in cohort format. You work through the material with other professionals facing similar challenges. The troubleshooting is live, the discussions go deep, and the output is something you can bring back to work and use on Monday.</p>
+
+      <p>Participants leave with practical skills, the certification, and enough context to evaluate AI tools and proposals on their own.</p>
+
+      <h2>Get in touch</h2>
+
+      <p>If you are looking at upskilling a team or want to discuss options for a cohort, the right first step is a conversation.</p>
+
+      <a href="mailto:kennethcmk12@gmail.com?subject=Training" class="art-cta">Email to discuss &rarr;</a>
+
+    </article>
+  </main>
+
+  <footer class="art-foot">
+    <a href="../index.html" class="art-back">
+      <span class="arr">&#8592;</span>
+      <span>Back to kentchong.com</span>
+    </a>
+    <span class="art-sig">Kent Chong &middot; kentchong.com</span>
+  </footer>
+
+  <script>
+    var prog = document.getElementById('prog');
+    function updateProg() {
+      var d = document.documentElement;
+      var s = d.scrollTop || document.body.scrollTop;
+      var h = d.scrollHeight - d.clientHeight;
+      if (h > 0) prog.style.width = (s / h * 100) + '%';
+    }
+    window.addEventListener('scroll', updateProg, { passive: true });
+  </script>
+
+</body>
+</html>

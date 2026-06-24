@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What civil engineering taught me about shipping software | Kent Chong</title>
+  <meta name="description" content="The discipline I learned on construction sites -- load paths, coordination, inspection -- applies directly to building software. A personal essay by Kent Chong." />
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700;800;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="article.css" />
+</head>
+<body>
+
+  <div class="read-prog" id="prog"></div>
+
+  <nav class="art-nav">
+    <a href="../index.html" class="back">
+      <span class="arr">&#8592;</span>
+      <span>Kent Chong</span>
+    </a>
+    <span class="nav-cat">Personal essay</span>
+  </nav>
+
+  <main class="art-main">
+    <header class="art-header">
+      <div class="art-meta">
+        <span class="cat">Personal essay</span>
+        <span class="sep">/</span>
+        <span>5 min read</span>
+      </div>
+      <h1 class="art-title">What civil engineering taught me about shipping software</h1>
+    </header>
+
+    <hr class="art-divider" />
+
+    <article class="art-body">
+
+      <p>The first thing they teach you on a construction site is that drawings lie.</p>
+
+      <p>Not intentionally. The architect draws what should be. The structural engineer specifies what needs to be. But the site is physical, the materials are real, and reality has opinions the drawing did not account for. A rebar cage does not fit where it was supposed to. A slab pours 30mm off-center. A column base shifts during formwork striking.</p>
+
+      <p>You adapt. You document. You get the next pour right.</p>
+
+      <p>I spent my first two years after university on sites and at a drawing board. Structural design on MRT Line 2 in Malaysia. The River of Life project. A five-storey commercial building in Singapore, where I coordinated twelve contractors across three basement levels and pulled an 82-point CONQUAS score from the Building and Construction Authority.</p>
+
+      <p>I did not know it at the time, but everything I needed to know about shipping software I learned there.</p>
+
+      <h2>Load paths first</h2>
+
+      <p>Structural engineering starts with a simple question: what loads does this thing need to carry? Gravity loads. Wind loads. Seismic forces. You work backwards from the load to the design. You do not start with aesthetics and hope the structure holds.</p>
+
+      <p>Software has load paths too. A system needs to carry the throughput of requests, the weight of edge cases, the load of concurrent users. The mistake most people make is designing the happy path first and treating load as an afterthought. On a construction site, that gets someone hurt.</p>
+
+      <p>Before I write a line of code or design a data pipeline, I ask: what does this thing actually need to handle? Not what it should handle in a demo. What it will handle when a user does something you did not expect on a Tuesday afternoon.</p>
+
+      <h2>Coordination is the real work</h2>
+
+      <p>On the five-storey in Singapore, I had twelve contractors on site at once. Structural. Architectural. M&amp;E. External. Subcontractors. Each one had their own schedule, their own priorities, their own problems. My job was not to do their work. My job was to make sure their work connected.</p>
+
+      <p>A data pipeline is the same thing. You have a source system, a transformation layer, a validation step, a destination. Each piece has its own constraints. The work is not the code. The work is the interface between the pieces.</p>
+
+      <p>When I build data systems now, I spend more time on the hand-offs than on the transformations. Where does data enter? What guarantees does the upstream make? What does the downstream need to trust? Those questions matter more than whether I use this library or that one.</p>
+
+      <h2>Testing is just inspection</h2>
+
+      <p>In construction, nothing gets covered until it has been inspected. You do not pour concrete over rebar until a qualified engineer has signed off on the placement. You do not cover a slab until the waterproofing has been tested. The inspector's job is to verify that what was planned matches what was built, before it is too late to change it.</p>
+
+      <p>Software testing is the same idea, done badly by most teams.</p>
+
+      <p>The failure mode I see most often is testing the happy path and assuming the rest follows. On a construction site, that is the equivalent of inspecting only the rebar that is easy to reach and signing off on the rest. Nobody would accept that. But in software, it is normal.</p>
+
+      <p>I test the edges first. What happens when the data is empty? What happens when it arrives out of order? What happens when the upstream changes its schema without telling anyone? These are the cracks in the slab. Find them before the pour.</p>
+
+      <h2>The site always has surprises</h2>
+
+      <p>The last thing I would say is this: expect the deviation. Not as a failure. As the default.</p>
+
+      <p>Every construction project deviates from the drawing. The question is not whether it will deviate, but whether your design has enough tolerance to absorb the deviation without losing structural integrity.</p>
+
+      <p>The same is true of software. The spec changes. The data is dirtier than expected. The user does something the product manager did not anticipate. If your system only works when everything goes right, it is not a system. It is a demo.</p>
+
+      <p>Build in tolerances. Document your decisions. Make it easy for the next person, which is usually you six months later, to understand why it was built this way.</p>
+
+      <p>The drawing is where you start. The site is where you actually build.</p>
+
+    </article>
+  </main>
+
+  <footer class="art-foot">
+    <a href="../index.html" class="art-back">
+      <span class="arr">&#8592;</span>
+      <span>Back to kentchong.com</span>
+    </a>
+    <span class="art-sig">Kent Chong &middot; kentchong.com</span>
+  </footer>
+
+  <script>
+    var prog = document.getElementById('prog');
+    function updateProg() {
+      var d = document.documentElement;
+      var s = d.scrollTop || document.body.scrollTop;
+      var h = d.scrollHeight - d.clientHeight;
+      if (h > 0) prog.style.width = (s / h * 100) + '%';
+    }
+    window.addEventListener('scroll', updateProg, { passive: true });
+  </script>
+
+</body>
+</html>

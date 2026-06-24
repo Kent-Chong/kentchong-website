@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prompts as products: designing for evaluation, not vibes | Kent Chong</title>
+  <meta name="description" content="A prompt that works in the chat window is not the same as one that works in production. Field notes on designing prompts that hold up under real conditions." />
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700;800;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="article.css" />
+</head>
+<body>
+
+  <div class="read-prog" id="prog"></div>
+
+  <nav class="art-nav">
+    <a href="../index.html" class="back">
+      <span class="arr">&#8592;</span>
+      <span>Kent Chong</span>
+    </a>
+    <span class="nav-cat">Field notes</span>
+  </nav>
+
+  <main class="art-main">
+    <header class="art-header">
+      <div class="art-meta">
+        <span class="cat">Field notes</span>
+        <span class="sep">/</span>
+        <span>4 min read</span>
+      </div>
+      <h1 class="art-title">Prompts as products: designing for evaluation, not vibes</h1>
+    </header>
+
+    <hr class="art-divider" />
+
+    <article class="art-body">
+
+      <p>There is a pattern I see in how most people work with AI. They open a chat interface, type something, read the output, adjust the phrasing a little, try again, and repeat until it feels right. When they land on something that produces a good result, they screenshot it or copy the prompt into a document and call it done.</p>
+
+      <p>That works for one-off tasks. It does not work for production.</p>
+
+      <p>A prompt that runs once in a chat window is not the same thing as a prompt that runs ten thousand times in a pipeline. The inputs change. The edge cases appear. The model behaves differently at different temperatures, with different context lengths, against different versions of the same API. The thing that worked perfectly last Tuesday fails on a specific input type this Thursday, and you do not find out until a business analyst asks why the numbers look wrong.</p>
+
+      <p>I have built prompt systems for document workflows, data extraction, and automated analysis. What I have learned is that prompts need to be treated the same way you treat any other piece of software: designed, tested, and documented before they are shipped.</p>
+
+      <h2>Start with the evaluation criteria</h2>
+
+      <p>Before you write a prompt, write the test.</p>
+
+      <p>What does a good output look like? What does a bad output look like? How would you tell the difference? If you cannot answer those questions before you write the prompt, you are not ready to write the prompt.</p>
+
+      <p>This sounds obvious. In practice, most people skip it. They know a good output when they see it, and they assume that knowledge is sufficient. It is not. The model does not share your intuition. You need to make the criteria explicit, because the only way to know if your prompt is working is to run it against cases where you already know the right answer.</p>
+
+      <p>Build a small evaluation set. Fifteen to thirty examples. Include the easy cases, the edge cases, and the cases that look easy but are not. Run your prompt against that set. Track the pass rate. Now you have a baseline.</p>
+
+      <h2>Design for failure, not success</h2>
+
+      <p>Demo prompts are designed to succeed on the expected input. Production prompts need to handle the unexpected input gracefully.</p>
+
+      <p>The expected input is the one you tested. The unexpected input is everything else. Users with unusual data. Upstream systems that change their format without warning. Empty fields where you assumed there would always be something.</p>
+
+      <p>When I design a prompt for production, I spend as much time thinking about the failure modes as the success modes. What should the system say when it does not have enough information to answer? How should it behave when the input is ambiguous? What is the fallback when the model produces something that fails validation?</p>
+
+      <p>A prompt that fails loudly is better than a prompt that fails silently. If the output is wrong and you know it is wrong, you can fix it. If the output is wrong and looks right, you have a problem.</p>
+
+      <h2>Reliability beats cleverness</h2>
+
+      <p>The best production prompts I have written are boring. They are explicit about what they want. They give examples. They constrain the output format. They repeat the key instruction in different ways because the model needs to understand not just the task but the priority.</p>
+
+      <p>Clever prompts are satisfying to write. They are concise and elegant and they work beautifully on the inputs you tested. Then they fail on the inputs you did not.</p>
+
+      <p>Boring prompts work. They are longer than they need to be. They repeat themselves. They are not impressive. But they produce consistent outputs across a wide range of inputs, and in production, consistent is what you need.</p>
+
+      <h2>Document your decisions</h2>
+
+      <p>When you change a prompt in production, write down why you changed it. What was failing before? What input triggered the failure? What change fixed it?</p>
+
+      <p>This sounds tedious. It is tedious. It is also the only way to avoid making the same change four times because you forgot you had already tried it. Prompts accumulate history. That history is useful. Treat it the same way you would treat a commit message: write it for the person who will need to understand this decision in three months, which is probably you.</p>
+
+      <p>Prompts are products. Design them like it.</p>
+
+    </article>
+  </main>
+
+  <footer class="art-foot">
+    <a href="../index.html" class="art-back">
+      <span class="arr">&#8592;</span>
+      <span>Back to kentchong.com</span>
+    </a>
+    <span class="art-sig">Kent Chong &middot; kentchong.com</span>
+  </footer>
+
+  <script>
+    var prog = document.getElementById('prog');
+    function updateProg() {
+      var d = document.documentElement;
+      var s = d.scrollTop || document.body.scrollTop;
+      var h = d.scrollHeight - d.clientHeight;
+      if (h > 0) prog.style.width = (s / h * 100) + '%';
+    }
+    window.addEventListener('scroll', updateProg, { passive: true });
+  </script>
+
+</body>
+</html>

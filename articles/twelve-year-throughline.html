@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The 12-year throughline: how building stays the same | Kent Chong</title>
+  <meta name="description" content="Structures, sales, data, AI. The materials keep changing. The underlying work does not. A personal essay by Kent Chong." />
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700;800;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="article.css" />
+</head>
+<body>
+
+  <div class="read-prog" id="prog"></div>
+
+  <nav class="art-nav">
+    <a href="../index.html" class="back">
+      <span class="arr">&#8592;</span>
+      <span>Kent Chong</span>
+    </a>
+    <span class="nav-cat">Personal essay</span>
+  </nav>
+
+  <main class="art-main">
+    <header class="art-header">
+      <div class="art-meta">
+        <span class="cat">Personal essay</span>
+        <span class="sep">/</span>
+        <span>5 min read</span>
+      </div>
+      <h1 class="art-title">The 12-year throughline: how building stays the same</h1>
+    </header>
+
+    <hr class="art-divider" />
+
+    <article class="art-body">
+
+      <p>People find my career trajectory confusing. Civil engineer to international sales to real estate to data analyst to AI coach. That is usually the moment in the conversation where I get the polite version of "what happened?"</p>
+
+      <p>What happened is that I kept building. The materials changed. The tools changed. The vocabulary changed. The underlying activity did not.</p>
+
+      <p>Let me show you what I mean.</p>
+
+      <h2>Structures</h2>
+
+      <p>I started as a structural design engineer. The job is to take a building that exists as an architect's vision and translate it into something that will not fall down. You model the loads. You design the members. You check the connections. You produce working drawings that other people build from.</p>
+
+      <p>The critical skill is this: you have to hold the whole thing in your head at once. Not just your part of it. The whole structure, all the forces, how each element affects the others. Change the section size of one column and you have changed the load distribution across every beam it connects to. You cannot design in isolation.</p>
+
+      <h2>Sales</h2>
+
+      <p>Then I sold things. Food products across fifteen countries. Condominium units across Kuala Lumpur. The translation from engineering to sales was harder than I expected and easier than I feared.</p>
+
+      <p>The harder part: nobody cares about your analysis. In engineering, if you can show the numbers, you win the argument. In sales, you can have the right numbers and still lose the conversation because you have not addressed the thing the other person actually cares about.</p>
+
+      <p>The easier part: a sales pipeline is just a pipeline. Leads come in, you qualify them, you move them through stages, you measure the conversion at each step. It is a system. It behaves like a system. You can optimize it like a system.</p>
+
+      <p>What I carried from engineering into sales was the habit of looking at the whole thing. Not just my leads. Not just my conversion rate. The whole pipeline, how each stage affected the next, where the bottleneck was. My team hit RM120 million in group sales in 2021. Some of that was skill. A lot of it was treating the sales process as an engineering problem.</p>
+
+      <h2>Data</h2>
+
+      <p>When I moved into data analytics, the translation was almost immediate. A data pipeline is a pipeline. Data comes in, you transform it, you validate it, you produce an output. The conceptual framework was already there. I just had to learn the syntax.</p>
+
+      <p>The thing that surprised me was how much the human problem persisted. In engineering, the structural load is physics. It does not have opinions. In data, the load is business logic. And business logic is made by humans, which means it changes, contradicts itself, and is often different from what the documentation says.</p>
+
+      <p>The discipline I bring to data work is the same discipline I used on construction sites: inspect everything, document your assumptions, build in tolerances, and expect the deviation. Data is never as clean as the upstream system claims. Design for that.</p>
+
+      <h2>AI</h2>
+
+      <p>AI automation is, at its core, a coordination problem. You have an intent on one side and a system on the other, and your job is to build the interface between them. The prompt is not the product. The product is the workflow: the validation, the fallbacks, the monitoring, the feedback loop that catches failures before they become problems.</p>
+
+      <p>The load-path question applies here too. What does this automation actually need to carry? How many inputs per day? What is the cost of a bad output? What are the edge cases that will appear at 2am on a holiday? Design for those, not for the demo.</p>
+
+      <h2>What stays the same</h2>
+
+      <p>Twelve years in, the question I ask at the start of every project is the same one I learned to ask as a junior engineer looking at a structural drawing.</p>
+
+      <p><em>What is this thing supposed to carry?</em></p>
+
+      <p>Everything else follows from that. The design follows from the load. The validation follows from what failure looks like. The documentation follows from what the next person needs to understand.</p>
+
+      <p>The materials are different every time. Concrete. Conversations. Code. The underlying work, the process of taking something messy and making it reliable and useful, has not changed.</p>
+
+      <p>That is the throughline. Not the job titles. Not the industries. The question.</p>
+
+    </article>
+  </main>
+
+  <footer class="art-foot">
+    <a href="../index.html" class="art-back">
+      <span class="arr">&#8592;</span>
+      <span>Back to kentchong.com</span>
+    </a>
+    <span class="art-sig">Kent Chong &middot; kentchong.com</span>
+  </footer>
+
+  <script>
+    var prog = document.getElementById('prog');
+    function updateProg() {
+      var d = document.documentElement;
+      var s = d.scrollTop || document.body.scrollTop;
+      var h = d.scrollHeight - d.clientHeight;
+      if (h > 0) prog.style.width = (s / h * 100) + '%';
+    }
+    window.addEventListener('scroll', updateProg, { passive: true });
+  </script>
+
+</body>
+</html>
