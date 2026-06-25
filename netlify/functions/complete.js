@@ -76,7 +76,7 @@ export default async (req, context) => {
         authorization: "Bearer " + process.env.OPENAI_API_KEY,
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini", // swap to "gpt-4o" for higher quality at higher cost
+        model: "gpt-4.1-nano", // cheapest tier ($0.10/$0.40 per 1M). Bump to "gpt-4o-mini" or "gpt-4o" for more quality.
         max_tokens: 400,
         messages: [
           { role: "system", content: SYSTEM },
