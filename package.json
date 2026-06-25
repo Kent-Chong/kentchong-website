@@ -1,0 +1,8 @@
+{
+  "name": "kentchong-website",
+  "private": true,
+  "description": "Static site; Netlify function deps only (no build step).",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}
