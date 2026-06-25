@@ -167,15 +167,21 @@ img { max-width: 100%; display: block; }
   to   { opacity: 1; transform: none; }
 }
 
-/* "KENT" handwriting: the brush fills are only the clip source — hidden.
-   The visible letters are drawn by #kcDraw's pen-strokes, clipped to these shapes. */
-#loader .kc-splash-svg .ink { opacity: 0; }
+/* "KENT" handwriting: a thin (90px) pen (#kcDraw, clipped to these shapes) writes
+   the letters. It can't fill the brush's thickest spot (K center) in one pass, so
+   once the write-on finishes (~2.35s) the full brush fills fade in to complete it —
+   same black, so the remaining sliver just fills in. */
+#loader .kc-splash-svg .ink {
+  opacity: 0;
+  animation: kcInkFill 0.3s var(--ease) 2.35s both;
+}
+@keyframes kcInkFill { to { opacity: 1; } }
 
 /* Each pen substroke draws itself on via stroke-dashoffset (per-stroke length +
-   timing set inline). Linear keeps a steady pen speed across the whole word. */
+   timing set inline). ease-in-out gives a natural pen accel/decel per stroke. */
 #loader .kc-splash-svg .kc-st {
   animation-name: kcDraw;
-  animation-timing-function: linear;
+  animation-timing-function: ease-in-out;
   animation-fill-mode: both;
 }
 @keyframes kcDraw { to { stroke-dashoffset: 0; } }
@@ -204,7 +210,7 @@ img { max-width: 100%; display: block; }
 
 @media (prefers-reduced-motion: reduce) {
   #loader .kc-splash { animation: none; }
-  #loader .kc-splash-svg .ink { opacity: 1; }
+  #loader .kc-splash-svg .ink { opacity: 1; animation: none; }
   #loader #kcDraw { display: none; }
   #loader .kc-splash-svg .type { opacity: 1; transform: none; animation: none; }
   #loader .kc-splash-svg .kc-caret { display: none; }

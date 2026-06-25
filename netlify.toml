@@ -1,0 +1,13 @@
+# Netlify config for the static site + Prompt Lab function.
+[build]
+  publish = "."                    # static site lives at repo root
+  functions = "netlify/functions"  # serverless functions dir
+
+[build.environment]
+  NODE_VERSION = "20"              # ensures global fetch is available
+
+# Keep the client path /api/complete; route it to the Netlify function.
+[[redirects]]
+  from = "/api/complete"
+  to = "/.netlify/functions/complete"
+  status = 200

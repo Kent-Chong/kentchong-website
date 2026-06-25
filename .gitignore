@@ -1,0 +1,9 @@
+# secrets — never commit
+.env
+.env.local
+
+# os / tooling
+.DS_Store
+node_modules/
+.vercel/
+.netlify/

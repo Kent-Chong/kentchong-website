@@ -422,10 +422,15 @@ function Lab() {
     if (!prompt.trim() || loading) return;
     setLoading(true); setOutput("");
     try {
-      const r = await window.claude.complete(
-        `You are answering on Kent Chong's personal website. Kent is a Data Analyst & Full Stack Developer at Gruda Technologies and an AI/Data Coach at LEAD, based in Kuala Lumpur. He started as a civil engineer (MRT Line 2, ROL, KTM lines, 5-storey commercial in Singapore), moved into international marketing/B2B sales (15+ countries), led a real-estate team to RM120M in 2021 group sales, then moved into data/AI. He speaks English, Mandarin, Cantonese, Malay. Outside work: he plays basketball, badminton, swimming, and billiards. Loves boardgames and recently got into karting. Passionate about good food — makes the effort to find it everywhere — and can cook too. Also draws. Keep responses tight, warm, conversational, first-person if speaking as Kent — no marketing fluff. Respond in plain text under 150 words.\n\nUser prompt: ${prompt}`
-      );
-      setOutput(r || "");
+      // Calls the serverless proxy (api/complete.js), which holds the API key
+      // and the site context server-side. Client sends only the user's prompt.
+      const r = await fetch("/api/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+      const data = await r.json();
+      setOutput(data.text || data.error || "// no response — try again.");
     } catch (e) { setOutput("// network error — try again in a moment."); }
     finally { setLoading(false); }
   };
