@@ -1,8 +1,8 @@
 // Self-check for the only non-trivial server logic: the BigQuery row builder.
-// Run: node --test netlify/functions/complete.test.js
+// Run: node --test tests/complete.test.js
 import { test } from "node:test";
 import assert from "node:assert";
-import { buildRow } from "./complete.js";
+import { buildRow } from "../netlify/functions/complete.js";
 
 test("buildRow hashes ip to 16 hex chars and caps text at 2000", () => {
   const row = buildRow({ prompt: "x".repeat(5000), reply: "y".repeat(5000), ip: "1.2.3.4" });
