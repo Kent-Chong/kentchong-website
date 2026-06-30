@@ -1,6 +1,9 @@
 # secrets — never commit
 .env
 .env.local
+GCP-service_account/
+*.json.key
+service-account*.json
 
 # os / tooling
 .DS_Store

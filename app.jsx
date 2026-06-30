@@ -35,6 +35,21 @@ function App() {
     root.style.setProperty("--accent-ink", accentInk(t.accent));
   }, [t.dir, t.density, t.accent]);
 
+  // GA4: one delegated listener tracks every button/link click — no per-component wiring.
+  _aEffect(() => {
+    const onClick = (e) => {
+      const el = e.target.closest("button, a, [data-track]");
+      if (!el || !window.gtag) return;
+      window.gtag("event", "ui_click", {
+        el_text: (el.innerText || el.getAttribute("aria-label") || "").trim().slice(0, 80),
+        el_tag: el.tagName.toLowerCase(),
+        section: el.closest("section")?.id || "global",
+      });
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+
   const taglines = window.SITE_DATA.TAGLINES;
   const tagline = taglines[t.tagline % taglines.length];
 

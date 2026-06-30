@@ -431,6 +431,13 @@ function Lab() {
       });
       const data = await r.json();
       setOutput(data.text || data.error || "// no response — try again.");
+      // GA4: lightweight prompt event (preview only; full text logged server-side).
+      if (window.gtag) window.gtag("event", "prompt_run", {
+        prompt_preview: prompt.slice(0, 100),
+        prompt_len: prompt.length,
+        is_preset: PRESETS.includes(prompt),
+        ok: !data.error,
+      });
     } catch (e) { setOutput("// network error — try again in a moment."); }
     finally { setLoading(false); }
   };
@@ -461,6 +468,9 @@ function Lab() {
             <button className="run" onClick={run} disabled={loading}>{loading ? "Running…" : "Run prompt →"}</button>
           </div>
           <div className={"out" + (output ? "" : " empty")}>{output || "// output appears here"}{loading && <span className="cur" />}</div>
+          <p style={{ marginTop: 12, fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--mut-on)" }}>
+            Prompts are logged anonymously to improve this demo.
+          </p>
         </div>
       </div>
     </section>

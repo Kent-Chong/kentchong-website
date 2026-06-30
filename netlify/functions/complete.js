@@ -10,6 +10,40 @@
 // Set OPENAI_API_KEY in Netlify env (and .env for local `netlify dev`).
 
 import { getStore } from "@netlify/blobs";
+import { GoogleAuth } from "google-auth-library";
+import crypto from "node:crypto";
+
+// Fire-and-forget: stream the full (untruncated) prompt + reply into BigQuery.
+// Fails open — logging must never block or break the user response.
+// Needs Netlify env: GCP_SA_KEY (service-account JSON), BQ_PROJECT (+ optional BQ_DATASET/BQ_TABLE).
+export function logPrompt({ prompt, reply, ip }) {
+  if (!process.env.GCP_SA_KEY) return;
+  const row = buildRow({ prompt, reply, ip });
+  (async () => {
+    try {
+      const creds = JSON.parse(process.env.GCP_SA_KEY);
+      const auth = new GoogleAuth({ credentials: creds, scopes: ["https://www.googleapis.com/auth/bigquery.insertdata"] });
+      const token = await auth.getAccessToken();
+      const { BQ_PROJECT, BQ_DATASET = "site_logs", BQ_TABLE = "prompts" } = process.env;
+      const url = `https://bigquery.googleapis.com/bigquery/v2/projects/${BQ_PROJECT}/datasets/${BQ_DATASET}/tables/${BQ_TABLE}/insertAll`;
+      await fetch(url, {
+        method: "POST",
+        headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+        body: JSON.stringify({ rows: [{ json: row }] }),
+      });
+    } catch (e) { /* fail open */ }
+  })();
+}
+
+// Pure row builder — hashes the IP (privacy) and caps text. Unit-tested below.
+export function buildRow({ prompt, reply, ip }) {
+  return {
+    ts: new Date().toISOString(),
+    ip_hash: crypto.createHash("sha256").update(String(ip)).digest("hex").slice(0, 16),
+    prompt: String(prompt).slice(0, 2000),
+    reply: String(reply).slice(0, 2000),
+  };
+}
 
 const SYSTEM =
   "You are answering on Kent Chong's personal website. Kent is a Data Analyst & " +
@@ -87,6 +121,7 @@ export default async (req, context) => {
     const data = await r.json();
     if (!r.ok) return json(502, { error: data?.error?.message || "api error" });
     const text = data?.choices?.[0]?.message?.content || "";
+    logPrompt({ prompt, reply: text, ip });   // fire-and-forget, not awaited
     return json(200, { text });
   } catch (e) {
     return json(500, { error: "network error" });

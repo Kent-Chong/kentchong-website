@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<!--
+  trace.html — handwriting capture tool (dev only, NOT part of the deployed site).
+  Write "KENT" with your mouse over the faint brand guide; it records each stroke's
+  path + timing in the splash's coordinate space (matrix-local, same as #kcDraw),
+  then exports kent-strokes.json. Hand that file back to wire into the splash.
+
+  Run it through a server (so it can read index.html for the guide):
+    python3 -m http.server   →   open http://localhost:8000/trace.html
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KENT — handwriting capture</title>
+<style>
+  :root { --bg:#0b0e14; --lime:#ccff00; --ink:#0a0a0a; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; min-height:100vh; background:var(--bg); color:#e7ecf3;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    display:flex; flex-direction:column; align-items:center; gap:22px; padding:32px 16px 60px;
+  }
+  h1 { font-size:16px; font-weight:600; letter-spacing:.02em; margin:4px 0 0; }
+  .hint { font-size:13px; color:#9aa6b8; max-width:560px; text-align:center; line-height:1.5; }
+  .hint b { color:#cdd6e4; }
+  .card {
+    width:min(560px,92vw); background:var(--lime); border-radius:28px;
+    box-shadow:0 24px 60px -18px rgba(0,0,0,.55); padding:24px; touch-action:none;
+  }
+  svg { width:100%; height:auto; display:block; cursor:crosshair; }
+  #guide path { fill:var(--ink); opacity:.13; }
+  #ink path { fill:none; stroke:var(--ink); stroke-width:16; stroke-linecap:round; stroke-linejoin:round; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  button {
+    font:inherit; font-size:13px; font-weight:600; padding:9px 16px; border-radius:999px;
+    border:1px solid #2a3242; background:#141a25; color:#e7ecf3; cursor:pointer;
+  }
+  button:hover { background:#1c2430; }
+  button.primary { background:var(--lime); color:#0a0a0a; border-color:var(--lime); }
+  button:disabled { opacity:.4; cursor:not-allowed; }
+  .meta { font-size:12px; color:#9aa6b8; font-variant-numeric:tabular-nums; }
+  textarea {
+    width:min(560px,92vw); height:120px; background:#0e131c; color:#9fb0c4; border:1px solid #222b39;
+    border-radius:12px; padding:12px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; resize:vertical;
+  }
+  .warn { color:#ffb4a8; font-size:13px; max-width:560px; text-align:center; }
+</style>
+</head>
+<body>
+  <h1>Write “KENT” — your handwriting</h1>
+  <p class="hint">
+    Trace <b>K · E · N · T</b> over the faint guide with your mouse. <b>Press, drag, release</b> for each stroke —
+    lift the mouse between strokes/letters (the pauses are recorded too). Write at a natural speed; the replay uses your real rhythm.
+  </p>
+
+  <div class="card">
+    <svg id="cap" viewBox="-30 170 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="capture">
+      <g id="guide"></g>
+      <g id="ink" transform="matrix(1,0,0,1,87,203)"></g>
+    </svg>
+  </div>
+
+  <div class="meta" id="meta">strokes: 0 · time: 0.00s</div>
+  <div class="row">
+    <button id="undo" disabled>Undo last stroke</button>
+    <button id="clear" disabled>Clear</button>
+    <button id="export" class="primary" disabled>Export ↓</button>
+  </div>
+  <p class="warn" id="warn" hidden></p>
+  <textarea id="out" placeholder="Exported JSON appears here (also downloads as kent-strokes.json). Copy this back to me." readonly></textarea>
+
+<script>
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById("cap");
+  const guide = document.getElementById("guide");
+  const inkG = document.getElementById("ink");
+  const out = document.getElementById("out");
+  const meta = document.getElementById("meta");
+  const warn = document.getElementById("warn");
+  const btnUndo = document.getElementById("undo");
+  const btnClear = document.getElementById("clear");
+  const btnExport = document.getElementById("export");
+
+  const OFF_X = 87, OFF_Y = 203;       // matrix(1,0,0,1,87,203) — splash glyph offset
+  const MIN_DIST = 6;                  // matrix-units between kept points (decimation)
+
+  // --- load the exact brush "KENT" glyphs from index.html as the faint guide ---
+  fetch("index.html").then(r => r.text()).then(html => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const inkGlyphs = doc.querySelectorAll(".kc-splash-svg .ink");
+    if (!inkGlyphs.length) throw new Error("no .ink glyphs found");
+    inkGlyphs.forEach(g => {
+      const tg = g.querySelector("g[transform]");           // translate group
+      const path = tg && tg.querySelector("path");
+      if (!path) return;
+      const p = document.createElementNS(NS, "path");
+      p.setAttribute("transform", tg.getAttribute("transform"));
+      p.setAttribute("d", path.getAttribute("d"));
+      guide.appendChild(p);
+    });
+  }).catch(e => {
+    warn.hidden = false;
+    warn.textContent = "Couldn't load the guide from index.html (" + e.message +
+      "). Make sure you opened this via a local server (python3 -m http.server), not file://. You can still write freehand.";
+  });
+
+  // --- capture state ---
+  let strokes = [];          // [{ pts:[{x,y}], t0, t1, el }]
+  let cur = null;
+  let sessionStart = null;
+  let lastTime = 0;
+
+  function toLocal(ev) {
+    const pt = svg.createSVGPoint();
+    pt.x = ev.clientX; pt.y = ev.clientY;
+    const u = pt.matrixTransform(svg.getScreenCTM().inverse());
+    return { x: u.x - OFF_X, y: u.y - OFF_Y };   // matrix-local (matches #kcDraw d)
+  }
+  function dStr(pts) {
+    if (!pts.length) return "";
+    let d = "M " + r(pts[0].x) + " " + r(pts[0].y);
+    for (let i = 1; i < pts.length; i++) d += " L " + r(pts[i].x) + " " + r(pts[i].y);
+    return d;
+  }
+  function r(n) { return Math.round(n * 10) / 10; }
+  function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+
+  function start(ev) {
+    ev.preventDefault();
+    const now = performance.now();
+    if (sessionStart === null) sessionStart = now;
+    const p = toLocal(ev);
+    const el = document.createElementNS(NS, "path");
+    inkG.appendChild(el);
+    cur = { pts: [p], t0: Math.round(now - sessionStart), t1: 0, el };
+    lastTime = now;
+    el.setAttribute("d", dStr(cur.pts));
+    svg.setPointerCapture && svg.setPointerCapture(ev.pointerId);
+  }
+  function move(ev) {
+    if (!cur) return;
+    const p = toLocal(ev);
+    const last = cur.pts[cur.pts.length - 1];
+    if (dist(p, last) < MIN_DIST) return;      // decimate
+    cur.pts.push(p);
+    cur.el.setAttribute("d", dStr(cur.pts));
+  }
+  function end(ev) {
+    if (!cur) return;
+    cur.t1 = Math.round(performance.now() - sessionStart);
+    if (cur.pts.length < 2) cur.el.remove();   // ignore stray clicks
+    else strokes.push(cur);
+    cur = null;
+    refresh();
+  }
+
+  svg.addEventListener("pointerdown", start);
+  svg.addEventListener("pointermove", move);
+  svg.addEventListener("pointerup", end);
+  svg.addEventListener("pointerleave", end);
+
+  function refresh() {
+    const total = strokes.length ? strokes[strokes.length - 1].t1 : 0;
+    meta.textContent = "strokes: " + strokes.length + " · time: " + (total / 1000).toFixed(2) + "s";
+    const has = strokes.length > 0;
+    btnUndo.disabled = !has; btnClear.disabled = !has; btnExport.disabled = !has;
+  }
+
+  btnUndo.onclick = () => { const s = strokes.pop(); if (s) s.el.remove(); refresh(); };
+  btnClear.onclick = () => {
+    strokes.forEach(s => s.el.remove()); strokes = []; sessionStart = null; out.value = ""; refresh();
+  };
+  btnExport.onclick = () => {
+    const data = {
+      space: "matrix-local (subtract 87,203 already applied; drop straight into #kcDraw)",
+      total: strokes.length ? strokes[strokes.length - 1].t1 : 0,
+      strokes: strokes.map(s => ({ d: dStr(s.pts), t0: s.t0, t1: s.t1 }))
+    };
+    const text = JSON.stringify(data, null, 2);
+    out.value = text;
+    const blob = new Blob([text], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "kent-strokes.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+})();
+</script>
+</body>
+</html>
