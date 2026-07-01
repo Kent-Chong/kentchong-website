@@ -414,13 +414,42 @@ function Lab() {
     "Draft a 2-sentence intro for Kent on a panel about AI adoption.",
     "What does Kent do outside of work?",
   ];
+  // Playful status lines cycled while the model thinks.
+  const THINKING = [
+    "Reading Kent's context…",
+    "Consulting the neurons…",
+    "Weighing a few honest words…",
+    "Composing a reply…",
+  ];
   const [prompt, setPrompt] = _cState(PRESETS[0]);
   const [output, setOutput] = _cState("");
   const [loading, setLoading] = _cState(false);
+  const [typing, setTyping] = _cState(false);
+  const [phase, setPhase] = _cState(0);
+  const typeTimer = _cRef(null);
+  const phaseTimer = _cRef(null);
+
+  // Type text out char-by-char (fast); honor reduced-motion by dumping it.
+  const typeOut = (text) => {
+    clearInterval(typeTimer.current);
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !text) { setOutput(text); setTyping(false); return; }
+    setTyping(true);
+    let i = 0;
+    typeTimer.current = setInterval(() => {
+      i += 2; // 2 chars/tick @ 12ms ≈ fast but readable
+      setOutput(text.slice(0, i));
+      if (i >= text.length) { clearInterval(typeTimer.current); setOutput(text); setTyping(false); }
+    }, 12);
+  };
+
+  _cEffect(() => () => { clearInterval(typeTimer.current); clearInterval(phaseTimer.current); }, []);
 
   const run = async () => {
     if (!prompt.trim() || loading) return;
-    setLoading(true); setOutput("");
+    clearInterval(typeTimer.current);
+    setLoading(true); setTyping(false); setOutput(""); setPhase(0);
+    phaseTimer.current = setInterval(() => setPhase((p) => (p + 1) % THINKING.length), 1400);
     try {
       // Calls the serverless proxy (api/complete.js), which holds the API key
       // and the site context server-side. Client sends only the user's prompt.
@@ -430,7 +459,10 @@ function Lab() {
         body: JSON.stringify({ prompt }),
       });
       const data = await r.json();
-      setOutput(data.text || data.error || "// no response — try again.");
+      const text = data.text || data.error || "// no response — try again.";
+      clearInterval(phaseTimer.current);
+      setLoading(false);
+      typeOut(text);
       // GA4: lightweight prompt event (preview only; full text logged server-side).
       if (window.gtag) window.gtag("event", "prompt_run", {
         prompt_preview: prompt.slice(0, 100),
@@ -438,8 +470,11 @@ function Lab() {
         is_preset: PRESETS.includes(prompt),
         ok: !data.error,
       });
-    } catch (e) { setOutput("// network error — try again in a moment."); }
-    finally { setLoading(false); }
+    } catch (e) {
+      clearInterval(phaseTimer.current);
+      setLoading(false);
+      typeOut("// network error — try again in a moment.");
+    }
   };
   const onKey = (e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") run(); };
 
@@ -465,9 +500,14 @@ function Lab() {
           <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} onKeyDown={onKey} rows={3} placeholder="ask anything about Kent…" />
           <div className="actions">
             <span className="hint">⌘/Ctrl + Enter to run</span>
-            <button className="run" onClick={run} disabled={loading}>{loading ? "Running…" : "Run prompt →"}</button>
+            <button className="run" onClick={run} disabled={loading}>{loading ? "Thinking…" : "Run prompt →"}</button>
           </div>
-          <div className={"out" + (output ? "" : " empty")}>{output || "// output appears here"}{loading && <span className="cur" />}</div>
+          <div className={"out" + (output || loading ? "" : " empty")}>
+            {loading
+              ? <span className="thinking"><span className="tdots"><i /><i /><i /></span>{THINKING[phase]}</span>
+              : (output || "// output appears here")}
+            {typing && <span className="cur" />}
+          </div>
           <p style={{ marginTop: 12, fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--mut-on)" }}>
             Prompts are logged anonymously to improve this demo.
           </p>
