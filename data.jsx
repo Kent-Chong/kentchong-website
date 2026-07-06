@@ -1,116 +1,41 @@
 /* Data for the site — single source of truth */
 
-const TIMELINE = [
+/* The decade before code, compressed to three beats.
+   Full detail lives in the résumé, not the homepage. */
+const BEFORE = [
   {
-    year: "2026",
-    yearEnd: "now",
-    role: "Coach",
-    company: "LEAD",
-    material: "people",
-    bullets: [
-      "Facilitate technical upskilling for corporate professionals and senior executives at multinationals — AI Automation, Data Engineering, Analytics.",
-      "Mentor high-performing cohorts through the practical implementation of data-driven solutions.",
-      "Partner with Lead Trainers to deliver a premium learning experience — technical troubleshooting, deep-dive discussions.",
-      "Bridge theoretical training and real-world application for established industry professionals.",
-    ],
+    years: "2012 — 2018",
+    label: "Structures",
+    line: "Civil engineer — construction sites, then structural design. Learned that intent only counts once someone can walk into it.",
+    receipts: ["MRT Line 2 · River of Life · KTM Gemas–JB", "5-storey build, Holland Village · 82-pt CONQUAS"],
   },
   {
-    year: "2022",
-    yearEnd: "now",
-    role: "Data Analyst & Full Stack Developer",
-    company: "Gruda Technologies",
-    material: "data",
-    bullets: [
-      "Build analytics solutions in SQL, Python, and Java — extraction, transformation, system logic.",
-      "Maintain data pipelines, validation processes, and backend integrations for reliable datasets.",
-      "Design interactive dashboards in Looker Studio and AWS QuickSight.",
-      "Lead AI automation and transformation work — prompt design, AI capabilities integrated into existing workflows.",
-      "Translate business requirements into scalable technical and AI-enabled solutions.",
-    ],
+    years: "2018 — 2022",
+    label: "Markets",
+    line: "International B2B marketing, then real estate — leading a team of seven. Learned that systems only work if a human wants to use them.",
+    receipts: ["Marketed across 15+ countries", "RM120M group sales · 2021"],
   },
   {
-    year: "2020",
-    yearEnd: "2022",
-    role: "Real Estate Consultant · Team Leader",
-    company: "Hartamas Real Estate (M) Sdn Bhd",
-    material: "sales",
-    bullets: [
-      "Helped manage a team of 7 across several new condominium developments.",
-      "Led a core team of 3 — sales training, character and skill building.",
-      "Secured a total of RM120 million in group sales in 2021.",
-      "Top Project Sales Award 2021 — RM24 million personal gross sales in a single project.",
-      "Ran Facebook and Instagram marketing — content production, copywriting.",
-    ],
-  },
-  {
-    year: "2018",
-    yearEnd: "2020",
-    role: "Marketing Business Development Executive",
-    company: "Asia Big Power Sdn Bhd",
-    material: "markets",
-    bullets: [
-      "Marketed company products across 15+ countries with proven sales records.",
-      "Expanded distribution into local modern trade markets.",
-      "Ran company marketing and branding projects — traditional and digital.",
-      "Represented the company at MATRADE international business matching events.",
-      "Attended SIAL Paris, SIAL Indonesia, GULFOOD Dubai, FOOD EXPO Hong Kong, MIHAS Malaysia.",
-      "Contributed to new product development and market research for F&B.",
-    ],
-  },
-  {
-    year: "2016",
-    yearEnd: "2018",
-    role: "Structural Design Engineer",
-    company: "Sepakat Setia Perunding Sdn Bhd",
-    material: "structures",
-    bullets: [
-      "Managed two major project tasks — guiding junior engineers, mentoring interns.",
-      "Structural design on MRT Line 2 (Sungai Buloh – Serdang – Putrajaya).",
-      "Structural design on the River Of Life (ROL) Project.",
-      "Structural design on KTM Gemas – Johor Bahru Line.",
-      "Worked across engineering and architecture sectors to deliver projects.",
-    ],
-  },
-  {
-    year: "2015",
-    yearEnd: "2016",
-    role: "Site Engineer",
-    company: "Incorporated Builders Pte Ltd · Singapore",
-    material: "concrete",
-    bullets: [
-      "Managed the construction site of a 5-storey commercial building (3 basement levels) at Taman Warna, Holland Village.",
-      "Supervised 12 contractors across structural and architectural works — in-house, external, subcontractors.",
-      "Achieved an 82-point CONQUAS score from Building and Construction Authority, Singapore.",
-    ],
-  },
-  {
-    year: "2012",
-    yearEnd: "2014",
-    role: "Sales Development Representative",
-    company: "Pitaberry Sdn Bhd",
-    material: "first sales",
-    bullets: [
-      "Functioned as sales developer at international events in Malaysia and Singapore.",
-      "Participated in local major exhibitions to promote company products.",
-      "Responsible for event venue set-up and marketing activities.",
-      "Served as Event Treasurer — managed event cash flow.",
-    ],
+    years: "2022 — now",
+    label: "Software",
+    line: "The bench I stopped changing. Full stack development, data analytics, and AI coaching at Gruda Technologies and LEAD.",
+    receipts: ["thebingo.ai · client builds · 4 AI tracks"],
   },
 ];
 
 const STACK = [
+  { name: "JavaScript · React", tag: "Code" },
+  { name: "Node.js", tag: "Code" },
   { name: "SQL", tag: "Data" },
   { name: "Python", tag: "Code" },
-  { name: "Java", tag: "Code" },
+  { name: "n8n", tag: "Automation" },
+  { name: "Prompt Engineering", tag: "AI" },
+  { name: "Claude · GPT APIs", tag: "AI" },
   { name: "Looker Studio", tag: "Viz" },
   { name: "AWS QuickSight", tag: "Viz" },
-  { name: "Prompt Design", tag: "AI" },
-  { name: "AI Automation", tag: "AI" },
   { name: "Data Pipelines", tag: "Systems" },
-  { name: "Dashboards", tag: "Viz" },
-  { name: "Backend Integrations", tag: "Systems" },
-  { name: "B2B Marketing", tag: "Growth" },
-  { name: "Content Strategy", tag: "Growth" },
+  { name: "GSAP", tag: "Frontend" },
+  { name: "Netlify", tag: "Ship" },
 ];
 
 const CERTS = [
@@ -133,54 +58,47 @@ const LANGUAGES = [
 ];
 
 const SERVICES_OFFERED = [
-  { name: "AI & Data Coaching",          desc: "Hands-on cohorts for L&D and senior leaders" },
-  { name: "AI Automation Workshops",     desc: "Practical AI adoption in real workflows" },
-  { name: "Data Pipeline Consulting",    desc: "Build, validate, instrument" },
-  { name: "Analytics Engineering",       desc: "From raw events to executive dashboards" },
-  { name: "Prompt Design & Integration", desc: "Production-grade prompts that survive prod" },
+  { name: "Web App Development",      desc: "Full stack builds for client businesses — scoped, shipped, maintained" },
+  { name: "AI Automation",            desc: "n8n workflows that take the repetitive work off your team's plate" },
+  { name: "Analytics & Dashboards",   desc: "From raw events to decisions — pipelines into Looker Studio & QuickSight" },
+  { name: "Corporate AI Training",    desc: "Four certified tracks: Automation · Data Science · Vibe Coding · Data Engineering" },
+  { name: "AI Integration Consulting", desc: "Production-grade prompts and AI features inside your existing systems" },
 ];
 
 const WORK = [
   {
     label: "01 / AI Analytics Platform",
     title: "thebingo.ai — Conversational BI",
-    desc:  "Built an AI-driven analytics application that scales how business teams interact with data. Auto-generates dashboards, delivers automated insights and strategic recommendations. Acts as an on-demand virtual Data Scientist, bridging raw data and actionable business execution.",
+    desc:  "An AI-driven analytics application I build on: ask it a business question, it auto-generates the dashboards, insights, and strategic recommendations — an on-demand virtual data scientist. It's where all three of my crafts meet: full stack build, analytics engine, and AI that has to survive real users.",
     stamp: "Live",
     url:   "https://thebingo.ai",
     img:   "assets/portfolio-bingoai.png",
   },
   {
-    label: "02 / Data Platform",
-    title: "Operational dashboards rebuilt on QuickSight",
-    desc:  "A migration from manual reports to a single source of truth for ops & sales leadership. Cut weekly reporting time from days to minutes.",
-    stamp: "In Progress",
-    img:   "assets/portfolio-1.png",
-  },
-  {
-    label: "03 / AI Automation",
-    title: "Prompt-driven document workflows",
-    desc:  "Designed a library of evaluated prompts integrated into existing pipelines — replacing repetitive analyst work with auditable AI steps.",
-    stamp: "In Progress",
+    label: "02 / Vibe Coding × Automation",
+    title: "Web apps shipped with AI, wired by n8n",
+    desc:  "Internal tools and client-facing apps built through an AI-assisted loop — spec, prompt, evaluate, ship — with n8n orchestrating the automation around them: intake, enrichment, notifications, reporting. The same method I teach, running in production.",
+    stamp: "Method",
     img:   "assets/portfolio-2.png",
   },
   {
-    label: "04 / Coaching Program",
-    title: "AI Automation cohort for senior leaders",
-    desc:  "Certified training courses I co-deliver covering AI Automation, AI for Data Engineering, AI for Data Science and Analytics, and AI Vibe Coding. Built for corporate professionals who need to actually use these tools, not just understand them.",
-    stamp: "Recurring",
-    img:   "assets/portfolio-coaching.png",
+    label: "03 / Client Builds",
+    title: "Business web apps for real operations",
+    desc:  "End-to-end builds for client businesses — operations, booking, and reporting tools with the boring parts done right: auth, data models, deploys, analytics baked in from day one. Case studies in write-up; names on request.",
+    stamp: "Shipped",
+    img:   "assets/portfolio-1.png",
   },
   {
-    label: "05 / Real Estate Sales",
-    title: "RM120M in group sales · 2021",
-    desc:  "Before data. Led a team of 7. The systems thinking I use today started here — leads as a pipeline, conversions as a funnel, training as throughput.",
-    stamp: "Past life",
-    img:   "assets/portfolio-4.png",
+    label: "04 / Coaching Program",
+    title: "AI cohorts for corporate professionals",
+    desc:  "Certified training I co-deliver at LEAD covering AI Automation, AI for Data Engineering, AI for Data Science and Analytics, and AI Vibe Coding. Built for professionals who need to actually use these tools on Monday morning, not just understand them.",
+    stamp: "Recurring",
+    img:   "assets/portfolio-coaching.png",
   },
 ];
 
 const WRITING = [
-  { date: "Jun 2026",  title: "Craft over passion — why I keep changing lanes",            where: "Personal essay",   url: "articles/craftsman-mindset.html" },
+  { date: "Jun 2026",  title: "Craft over passion — the bet behind the craftsman mindset", where: "Personal essay",   url: "articles/craftsman-mindset.html" },
   { date: "Jun 2026",  title: "What civil engineering taught me about shipping software",  where: "Personal essay",   url: "articles/civil-engineering-software.html" },
   { date: "Jun 2026",  title: "Prompts as products — designing for evaluation, not vibes", where: "Field notes",       url: "articles/prompts-as-products.html" },
   { date: "Jun 2026",  title: "The 12-year throughline — how building stays the same",     where: "Personal essay",   url: "articles/twelve-year-throughline.html" },
@@ -193,7 +111,7 @@ const PERSONAL = [
   { k: "Reads",         v: "Engineering history. Operator memoirs. Anything by Stewart Brand." },
   { k: "Builds on",     v: "Long walks. Strong coffee. Whiteboards before code." },
   { k: "Listens to",    v: "Lo-fi when shipping. Cantopop on the drive home." },
-  { k: "Currently",     v: "Coaching senior leaders on AI adoption · building data systems at Gruda" },
+  { k: "Currently",     v: "Building thebingo.ai & client apps at Gruda · coaching four AI tracks at LEAD" },
 ];
 
 const HOBBIES = [
@@ -204,23 +122,22 @@ const HOBBIES = [
 ];
 
 const TAGLINES = [
-  "I build. Bridges, businesses, data, and AI.",
-  "From structures to systems.",
-  "Engineer by training. Builder by instinct.",
-  "Ten years building. Different materials each time.",
+  "I build software with AI — and coach people to do the same.",
+  "Full stack builder. Data analyst. AI coach.",
+  "Ship the app. Wire the data. Teach the method.",
+  "Engineer by training. Builder by craft.",
 ];
 
 const ROTATOR_WORDS = [
-  "bridges",
-  "businesses",
-  "pipelines",
-  "systems",
-  "teams",
-  "AI",
+  "web apps",
+  "AI systems",
+  "dashboards",
+  "automations",
+  "builders",
 ];
 
 // expose globally for other Babel scripts
 window.SITE_DATA = {
-  TIMELINE: TIMELINE.slice().reverse(), STACK, CERTS, EDUCATION, LANGUAGES, SERVICES_OFFERED, WORK,
+  BEFORE, STACK, CERTS, EDUCATION, LANGUAGES, SERVICES_OFFERED, WORK,
   WRITING, PERSONAL, HOBBIES, TAGLINES, ROTATOR_WORDS,
 };

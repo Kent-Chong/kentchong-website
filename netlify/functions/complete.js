@@ -13,26 +13,32 @@ import { getStore } from "@netlify/blobs";
 import { GoogleAuth } from "google-auth-library";
 import crypto from "node:crypto";
 
-// Fire-and-forget: stream the full (untruncated) prompt + reply into BigQuery.
+// Stream the full (untruncated) prompt + reply into BigQuery. Must be awaited:
+// Lambda freezes the moment the handler returns, killing any in-flight work.
 // Fails open — logging must never block or break the user response.
 // Needs Netlify env: GCP_SA_KEY (service-account JSON), BQ_PROJECT (+ optional BQ_DATASET/BQ_TABLE).
-export function logPrompt({ prompt, reply, ip }) {
+export async function logPrompt({ prompt, reply, ip }) {
   if (!process.env.GCP_SA_KEY) return;
-  const row = buildRow({ prompt, reply, ip });
-  (async () => {
-    try {
-      const creds = JSON.parse(process.env.GCP_SA_KEY);
-      const auth = new GoogleAuth({ credentials: creds, scopes: ["https://www.googleapis.com/auth/bigquery.insertdata"] });
-      const token = await auth.getAccessToken();
-      const { BQ_PROJECT, BQ_DATASET = "site_logs", BQ_TABLE = "prompts" } = process.env;
-      const url = `https://bigquery.googleapis.com/bigquery/v2/projects/${BQ_PROJECT}/datasets/${BQ_DATASET}/tables/${BQ_TABLE}/insertAll`;
-      await fetch(url, {
-        method: "POST",
-        headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
-        body: JSON.stringify({ rows: [{ json: row }] }),
-      });
-    } catch (e) { /* fail open */ }
-  })();
+  try {
+    const { BQ_PROJECT, BQ_DATASET = "site_logs", BQ_TABLE = "prompts" } = process.env;
+    if (!BQ_PROJECT) { console.error("bq log skipped: BQ_PROJECT not set"); return; }
+    const row = buildRow({ prompt, reply, ip });
+    const creds = JSON.parse(process.env.GCP_SA_KEY);
+    const auth = new GoogleAuth({ credentials: creds, scopes: ["https://www.googleapis.com/auth/bigquery.insertdata"] });
+    const token = await auth.getAccessToken();
+    const url = `https://bigquery.googleapis.com/bigquery/v2/projects/${BQ_PROJECT}/datasets/${BQ_DATASET}/tables/${BQ_TABLE}/insertAll`;
+    const r = await fetch(url, {
+      method: "POST",
+      headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+      body: JSON.stringify({ rows: [{ json: row }] }),
+    });
+    const res = await r.json().catch(() => ({}));
+    if (!r.ok || res.insertErrors) {
+      console.error("bq log failed", r.status, JSON.stringify(res.insertErrors || res.error || res));
+    }
+  } catch (e) {
+    console.error("bq log failed", e); // fail open — never break the user reply
+  }
 }
 
 // Pure row builder — hashes the IP (privacy) and caps text. Unit-tested below.
@@ -46,12 +52,17 @@ export function buildRow({ prompt, reply, ip }) {
 }
 
 const SYSTEM =
-  "You are answering on Kent Chong's personal website. Kent is a Data Analyst & " +
-  "Full Stack Developer at Gruda Technologies and an AI/Data Coach at LEAD, based " +
-  "in Kuala Lumpur. He started as a civil engineer (MRT Line 2, ROL, KTM lines, " +
-  "5-storey commercial in Singapore), moved into international marketing/B2B sales " +
-  "(15+ countries), led a real-estate team to RM120M in 2021 group sales, then moved " +
-  "into data/AI. He speaks English, Mandarin, Cantonese, Malay. Outside work: he " +
+  "You are answering on Kent Chong's personal website. Kent is a Full Stack Developer & " +
+  "Data Analyst at Gruda Technologies and an AI Coach at LEAD, based in Kuala Lumpur. " +
+  "His craft today: building web apps for client businesses with AI-assisted development " +
+  "(vibe coding done as engineering: spec, prompt, evaluate, harden), n8n AI automation, " +
+  "data analytics (SQL, Python, Looker Studio, QuickSight), and thebingo.ai — an AI-driven " +
+  "conversational analytics platform. At LEAD he coaches four certified AI tracks: AI " +
+  "Automation, AI Data Science & Analytics, AI Vibe Coding, and AI Data Engineering. " +
+  "This is his long-term craft — he's done changing fields. Before code (the footnote, " +
+  "not the headline): civil engineer (MRT Line 2, ROL, KTM lines, 5-storey commercial in " +
+  "Singapore), then international B2B marketing (15+ countries), then led a real-estate " +
+  "team to RM120M in 2021 group sales. He speaks English, Mandarin, Cantonese, Malay. Outside work: he " +
   "plays basketball, badminton, swimming, and billiards. Loves boardgames and recently " +
   "got into karting. Passionate about good food — makes the effort to find it everywhere " +
   "— and can cook too. Also draws. Keep responses tight, warm, conversational, " +
@@ -121,7 +132,7 @@ export default async (req, context) => {
     const data = await r.json();
     if (!r.ok) return json(502, { error: data?.error?.message || "api error" });
     const text = data?.choices?.[0]?.message?.content || "";
-    logPrompt({ prompt, reply: text, ip });   // fire-and-forget, not awaited
+    await logPrompt({ prompt, reply: text, ip }); // awaited: Lambda kills unawaited work on return
     return json(200, { text });
   } catch (e) {
     return json(500, { error: "network error" });

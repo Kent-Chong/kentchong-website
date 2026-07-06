@@ -33,7 +33,7 @@ function Nav() {
       </a>
       <ul>
         <li><a href="#about">About</a></li>
-        <li><a href="#career">Career</a></li>
+        <li><a href="#craft">Craft</a></li>
         <li><a href="#work">Work</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#lab">Lab</a></li>
@@ -70,7 +70,7 @@ function Hero({ tagline }) {
       <div className="shell" style={{ width: "100%", display: "flex", flexDirection: "column", flex: 1 }}>
         <div className="hero-top">
           <div className="ht-meta">
-            <span className="eyebrow">Builder · Data &amp; AI</span>
+            <span className="eyebrow">Full Stack Developer · Data &amp; AI Coach</span>
             <span className="mono" style={{ color: "var(--ink-mut)" }}>↳ kentchong.com</span>
           </div>
           <div className="ht-loc">
@@ -102,10 +102,10 @@ function Hero({ tagline }) {
 
         <div className="hero-foot">
           <div>
-            <p className="hero-tagline"><strong>{tagline}</strong> Engineer by training, builder by instinct — concrete, conversations, then code.</p>
+            <p className="hero-tagline"><strong>{tagline}</strong> Full stack apps, data analytics, and AI training cohorts — built and taught from Kuala Lumpur.</p>
             <div className="hero-cta-row">
               <a className="btn primary magnetic" href="#work" ref={btnA}><span className="btn-l">See the work</span></a>
-              <a className="btn magnetic" href="#career" ref={btnB}><span className="btn-l">The throughline</span></a>
+              <a className="btn magnetic" href="#craft" ref={btnB}><span className="btn-l">The craft</span></a>
             </div>
           </div>
           <div className="hero-scrollcue">
@@ -123,200 +123,56 @@ function Hero({ tagline }) {
 function About() {
   return (
     <section className="s shell" id="about" data-lightzone-end>
-      <SHead idx="01 — About" title={<>From <em>structures</em> to systems.</>} tag="The story" />
+      <SHead idx="01 — About" title={<>The craft I'm <em>keeping</em>.</>} tag="The story" />
       <div className="about-body">
         <div className="about-main reveal">
           <p className="about-lead">
-            I take messy reality, find the <span className="accent">load-bearing parts</span>, and put something useful in their place.
+            I build software with <span className="accent">AI</span> — and coach people to do the same.
           </p>
           <div className="about-text">
             <p>
-              I trained as a <span className="mark">civil engineer</span> and spent my first years on construction sites and
-              structural drawings — MRT Line 2, the River of Life, KTM Gemas–Johor Bahru, a five-storey building in Holland Village.
-              Twenty-three, learning to coordinate twelve trades and turn intent into something you could walk into.
+              My week splits between two benches. At <span className="mark">Gruda Technologies</span> I work as a
+              full stack developer and data analyst — web apps for client businesses, data pipelines, dashboards,
+              and thebingo.ai, an AI-driven analytics platform. At <span className="mark">LEAD</span> I coach
+              corporate professionals through four certified AI tracks: Automation, Data Science, Vibe Coding,
+              and Data Engineering.
             </p>
             <p>
-              Then I sold things. Across <span className="mark">fifteen countries</span>, then across condominium developments —
-              RM120 million in group sales the year I led a team of seven. Sales taught me what engineering didn't: decisions are
-              made by humans, and systems only work if someone wants to use them.
+              I build the way I teach: AI-assisted from the first line. Spec it, prompt it, evaluate it, harden it —
+              <span className="mark"> vibe coding</span> done as engineering, not luck. n8n handles the automation
+              between the apps.
             </p>
             <p>
-              Today I build <span className="mark">data &amp; AI systems</span> at Gruda Technologies and coach senior leaders at LEAD
-              on adopting them. The materials change — concrete, conversations, code — the work stays the same.
+              Before code I built other things — rail lines as a <span className="mark">civil engineer</span>,
+              RM120 million in property sales leading a team of seven. That range is the footnote, not the headline:
+              it's why I can talk to the engineer and the boardroom in the same meeting. The craft I'm mastering
+              now is this one, and I'm not changing benches again.
             </p>
             <p className="about-sig">— Kent</p>
           </div>
         </div>
         <aside className="about-aside reveal d2">
-          <div className="row"><span className="k">Now</span><span className="v">Data Analyst · AI Coach</span></div>
+          <div className="row"><span className="k">Now</span><span className="v">Full Stack Dev · AI Coach</span></div>
           <div className="row"><span className="k">At</span><span className="v">Gruda · LEAD</span></div>
           <div className="row"><span className="k">Based</span><span className="v">Greater KL</span></div>
-          <div className="row"><span className="k">Speaks</span><span className="v">EN · 中文 · 粤 · BM</span></div>
-          <div className="row"><span className="k">Building</span><span className="v">12+ years</span></div>
+          <div className="row"><span className="k">Focus</span><span className="v">Web apps · Data · AI</span></div>
+          <div className="row"><span className="k">Teaching</span><span className="v">4 certified AI tracks</span></div>
         </aside>
       </div>
     </section>
   );
 }
 
-/* ---------- numbers ---------- */
-function Numbers() {
-  const [ref, seen] = useSeen(0.25);
-  const sales = useCountUp(120, 1600, seen);
-  const years = useCountUp(12, 1400, seen);
-  const countries = useCountUp(15, 1400, seen);
-  const peak = useCountUp(24, 1500, seen);
-  const langs = useCountUp(4, 1200, seen);
-  return (
-    <section className="s shell" id="numbers">
-      <SHead idx="02 — Receipts" title={<>Things actually <em>built</em>.</>} tag="By the numbers" />
-      <div className={"numbers reveal" + (seen ? " in" : "")} ref={ref}>
-        <div className="stat"><span className="v"><span className="u">RM</span>{Math.round(sales)}<span className="u">M</span></span><span className="l">Group sales led · 2021, Hartamas Real Estate</span></div>
-        <div className="stat"><span className="v">{Math.round(years)}<span className="u">+</span></span><span className="l">Years building across engineering, sales, data &amp; AI</span></div>
-        <div className="stat"><span className="v">{Math.round(countries)}<span className="u">+</span></span><span className="l">Countries marketed in</span></div>
-        <div className="stat"><span className="v"><span className="u">RM</span>{Math.round(peak)}<span className="u">M</span></span><span className="l">Personal peak · single project</span></div>
-        <div className="stat"><span className="v">{Math.round(langs)}</span><span className="l">Languages spoken</span></div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- career timeline ---------- */
-function Career() {
-  const items = window.SITE_DATA.TIMELINE;
-  const [i, setI] = _cState(items.length - 1);
-  const ref = _cRef(null);
-  const go = (d) => setI((c) => Math.min(items.length - 1, Math.max(0, c + d)));
-
-  _cEffect(() => {
-    const onKey = (e) => {
-      if (!ref.current) return;
-      const r = ref.current.getBoundingClientRect();
-      if (r.top > window.innerHeight || r.bottom < 0) return;
-      if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
-      if (e.key === "ArrowLeft") go(-1);
-      if (e.key === "ArrowRight") go(1);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [items.length]);
-
-  const cur = items[i];
-  const progress = items.length > 1 ? (i / (items.length - 1)) * 100 : 0;
-  const yrs = (it) => it.yearEnd && it.yearEnd !== it.year ? `${it.year}–${it.yearEnd}` : it.year;
-
-  const cardRef = _cRef(null);
-  const yearRef = _cRef(null);
-
-  // GSAP: stagger the card content + pop the big year on every chapter change.
-  // Layout effect = set initial state before paint (no flash). Graceful no-op
-  // when GSAP is absent or the visitor prefers reduced motion.
-  React.useLayoutEffect(() => {
-    const card = cardRef.current;
-    const G = window.gsap;
-    if (!card || !G || window.PRM_MOTION) return;
-    const tweens = [];
-    tweens.push(G.fromTo(
-      card.querySelectorAll(".rolemeta, h3, .company, li"),
-      { y: 18, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.045 }
-    ));
-    if (yearRef.current) {
-      tweens.push(G.fromTo(yearRef.current,
-        { y: 12, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }
-      ));
-    }
-    return () => tweens.forEach((t) => t.kill());
-  }, [i]);
-
-  return (
-    <section className="s shell" id="career" ref={ref}>
-      <SHead idx="03 — Build log" title={<>The <em>throughline</em>.</>} tag="2012 → now" />
-
-      <div className="tl-scrub reveal">
-        <div className="tl-track">
-          <div className="tl-line" />
-          <div className="tl-prog" style={{ width: `${progress}%` }} />
-          <div className="tl-stops">
-            {items.map((it, k) => (
-              <button key={k} className={"tl-stop" + (k === i ? " is-active" : "")} onClick={() => setI(k)} aria-label={`Jump to ${it.year}`}>
-                <span className="dot" />
-                <span className="yr">{it.year}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="tl-nav">
-          <button onClick={() => go(-1)} disabled={i === 0}>← Earlier</button>
-          <span className="tl-hint">← → to scrub · {String(i + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span>
-          <button onClick={() => go(1)} disabled={i === items.length - 1}>Later →</button>
-        </div>
-      </div>
-
-      <div className="tl-wrap">
-        <div className="tl-side reveal d1">
-          <div className="tl-years" ref={yearRef}>
-            {cur.year}{cur.yearEnd && cur.yearEnd !== cur.year && <><span className="sep"> — </span>{cur.yearEnd}</>}
-          </div>
-          <div className="tl-mat">Chapter {String(i + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")} · <b>{cur.company.split(" ")[0]}</b></div>
-          <div className="tl-count">Material — <b>{cur.material}</b></div>
-        </div>
-        <div className="tl-card" ref={cardRef}>
-          <span className="tl-bign" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-          <div className="rolemeta">
-            <span>{yrs(cur)}</span>
-            <span className="mat">{cur.material}</span>
-          </div>
-          <h3>{cur.role}</h3>
-          <div className="company">{cur.company}</div>
-          <ul>{cur.bullets.map((b, k) => <li key={k}>{b}</li>)}</ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- craftsman mindset (ethos) ---------- */
-function Craftsman() {
-  return (
-    <section className="s shell" id="ethos">
-      <SHead idx="04 — Ethos" title={<>Skills over <em>passion</em>.</>} tag="Core value" />
-      <div className="craft">
-        <div className="craft-lead reveal">
-          <p>
-            I don't "follow my passion."<br />I build the craft, and the passion follows.
-          </p>
-        </div>
-        <div className="craft-body reveal d1">
-          <p>
-            The advice to chase what you love gets the order backwards. Passion is the
-            <span className="mark"> output</span> of getting genuinely good at something rare and
-            valuable — not the input you start with. So I bet on the work itself: deliberate
-            practice, real reps, skills that compound.
-          </p>
-          <p>
-            That bet is why I kept changing materials — structures, sales, data, AI. Not chasing
-            a feeling, but stacking <span className="mark">career capital</span> and spending it on
-            harder problems, more autonomy, more impact. Different bench, same discipline.
-          </p>
-          <a className="craft-cta" href="articles/craftsman-mindset.html">Read the essay →</a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- capabilities ---------- */
-function Capabilities() {
+/* ---------- the craft (three pillars) ---------- */
+function Craft() {
   const caps = [
-    { tag: "01", h: "Data systems that survive contact with the business.", p: "Pipelines, validation, dashboards. I write the SQL, design the schema, and own the gap between what stakeholders ask for and what the numbers will actually support.", li: ["SQL · Python · Java", "Looker Studio · QuickSight", "Backend integrations", "Validation & reconciliation"] },
-    { tag: "02", h: "AI that fits inside the work people already do.", p: "Prompt design, evaluation, and integration into existing pipelines. I aim for boring reliability over magic — AI that quietly raises the floor.", li: ["Prompt design & evaluation", "Workflow automation", "AI transformation", "Production integration"] },
-    { tag: "03", h: "Coaching that translates technical to operational.", p: "I facilitate AI & data cohorts for corporate and senior leaders. The wins come from turning theory into something a Monday morning can absorb.", li: ["AI automation cohorts", "Data engineering modules", "Executive mentorship", "Technical troubleshooting"] },
+    { tag: "Build", h: "Full stack web apps, shipped with AI.", p: "Client business apps end to end — frontend, backend, deploy. I vibe code with discipline: spec, prompt, evaluate, harden. n8n automations glue the systems together.", li: ["JavaScript · React · Node", "Vibe coding workflow", "n8n AI automation", "Netlify · serverless"] },
+    { tag: "Analyze", h: "Data that survives contact with the business.", p: "Pipelines, validation, dashboards. I write the SQL, design the schema, and own the gap between what stakeholders ask for and what the numbers will actually support. thebingo.ai is this craft, productized.", li: ["SQL · Python", "Looker Studio · QuickSight", "Pipelines & validation", "thebingo.ai"] },
+    { tag: "Coach", h: "The method, taught hands-on.", p: "Certified AI training for corporate professionals and senior leaders at LEAD. The wins come from turning theory into something a Monday morning can absorb.", li: ["AI Automation", "AI Data Science & Analytics", "AI Vibe Coding", "AI Data Engineering"] },
   ];
   return (
-    <section className="s shell" id="capabilities">
-      <SHead idx="05 — Disciplines" title={<>Three crafts, <em>one habit</em>.</>} tag="What I build" />
+    <section className="s shell" id="craft">
+      <SHead idx="02 — The craft" title={<>Build. Analyze. <em>Coach</em>.</>} tag="One discipline" />
       <div className="cap-grid">
         {caps.map((c, k) => (
           <div className={"cap reveal d" + (k + 1)} key={k}>
@@ -331,13 +187,121 @@ function Capabilities() {
   );
 }
 
+/* ---------- how I build (method, GSAP scrub) ---------- */
+function Method() {
+  const steps = [
+    { n: "01", h: "Spec",     p: "Write the contract first. What it does, what done means, what can break." },
+    { n: "02", h: "Prompt",   p: "Vibe code against the spec — AI writes fast, I steer. Small pieces, tight loops." },
+    { n: "03", h: "Evaluate", p: "Read every line that matters. Test the paths the money and the data travel." },
+    { n: "04", h: "Harden",   p: "Auth, validation, error paths, monitoring — the unglamorous 20% that makes it real." },
+    { n: "05", h: "Ship",     p: "Deploy, instrument, watch. n8n automates whatever repeats." },
+  ];
+  const ref = useStepScrub();
+  return (
+    <section className="s shell" id="method">
+      <SHead idx="04 — Method" title={<>Vibe coding, as <em>engineering</em>.</>} tag="How I build" />
+      <div className="method">
+        <div className="mt-intro reveal">
+          <p>
+            "Vibe coding" gets dismissed as luck. Done properly it's a discipline — the AI supplies
+            speed, the engineer supplies judgment. This is the loop I run on every build, and the
+            one I teach in the AI Vibe Coding track.
+          </p>
+        </div>
+        <div className="mt-steps" ref={ref}>
+          <div className="mt-line" aria-hidden="true"><i /></div>
+          {steps.map((s, k) => (
+            <div className="mt-step" key={k}>
+              <span className="n">{s.n}</span>
+              <div>
+                <h3>{s.h}</h3>
+                <p>{s.p}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- craftsman mindset (ethos) ---------- */
+function Craftsman() {
+  return (
+    <section className="s shell" id="ethos">
+      <SHead idx="05 — Ethos" title={<>Skills over <em>passion</em>.</>} tag="Core value" />
+      <div className="craft">
+        <div className="craft-lead reveal">
+          <p>
+            I changed materials for ten years.<br />This is the one I'm keeping.
+          </p>
+        </div>
+        <div className="craft-body reveal d1">
+          <p>
+            The advice to chase what you love gets the order backwards. Passion is the
+            <span className="mark"> output</span> of getting genuinely good at something rare and
+            valuable — not the input you start with. So I bet on the work itself: deliberate
+            practice, real reps, skills that compound.
+          </p>
+          <p>
+            For a decade that meant stacking <span className="mark">career capital</span> across
+            structures, sales, and data. Now the capital is spent — on this bench. Building software
+            with AI, making data useful, teaching the method. Same seat every morning, deliberately,
+            for the long term. Depth is the point now.
+          </p>
+          <a className="craft-cta" href="articles/craftsman-mindset.html">Read the essay →</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- before code (the decade as a through-line timeline) ----------
+   One horizontal rail, a node per era; clicking a period flashes in the
+   detail card for that era (key remount restarts the CSS animation). */
+function BeforeCode() {
+  const eras = window.SITE_DATA.BEFORE;
+  const [active, setActive] = _cState(0);
+  const b = eras[active];
+  return (
+    <section className="s shell" id="before">
+      <SHead idx="06 — Foundation" title={<>Before <em>code</em>.</>} tag="2012 → 2022" />
+      <div className="before-intro reveal">
+        <p>Ten years of other benches. Each one pays into this one.</p>
+      </div>
+      <div className="before-line reveal" role="tablist" aria-label="Career timeline">
+        <div className="bl-rail" aria-hidden="true" />
+        {eras.map((e, k) => (
+          <button
+            key={k}
+            role="tab"
+            aria-selected={k === active}
+            className={"bl-node" + (k === active ? " is-active" : "")}
+            onClick={() => setActive(k)}
+          >
+            <span className="bl-dot" aria-hidden="true" />
+            <span className="bl-years">{e.years}</span>
+            <span className="bl-label">{e.label}</span>
+          </button>
+        ))}
+      </div>
+      <div className="bf bf-card reveal" key={active} role="tabpanel">
+        <div className="bf-years">{b.years}</div>
+        <div className="bf-label">{b.label}</div>
+        <p>{b.line}</p>
+        <ul>{b.receipts.map((r, j) => <li key={j}>{r}</li>)}</ul>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- stack ---------- */
 function Stack() {
   const items = window.SITE_DATA.STACK;
   const doubled = [...items, ...items];
   return (
     <section className="s shell" id="stack">
-      <SHead idx="06 — Toolkit" title={<>What I <em>reach for</em>.</>} tag="Daily drivers" />
+      <SHead idx="07 — Toolkit" title={<>What I <em>reach for</em>.</>} tag="Daily drivers" />
       <div className="stack reveal">
         <div className="stack-track">
           {doubled.map((it, k) => (
@@ -355,7 +319,7 @@ function Stack() {
 function Work() {
   return (
     <section className="s shell" id="work">
-      <SHead idx="07 — Selected" title={<>Some of what I've <em>shipped</em>.</>} tag="Case studies in progress" />
+      <SHead idx="03 — Selected" title={<>Some of what I've <em>shipped</em>.</>} tag="Case studies in progress" />
       <div className="work-grid">
         {window.SITE_DATA.WORK.map((w, i) => {
           const live = !w.stamp.toLowerCase().includes("soon");
@@ -385,12 +349,13 @@ function Services() {
   return (
     <section className="s shell" id="services">
       <SHead idx="08 — Together" title={<>Available <em>for</em>.</>} tag="Services" />
+
       <div className="services">
         <div className="svc-intro reveal">
           <p>
             I take on a small number of engagements at a time — usually one coaching cohort and one build in parallel.
-            If you're navigating AI adoption, building data systems, or trying to make analytics actually drive decisions,
-            talk to me early.
+            If you need a web app built, workflows automated, analytics that actually drive decisions, or a team
+            trained to use AI properly, talk to me early.
           </p>
         </div>
         <div className="svc-list reveal d1">
@@ -410,9 +375,9 @@ function Services() {
 /* ---------- lab ---------- */
 function Lab() {
   const PRESETS = [
-    "Summarize Kent's career arc in three honest bullets.",
-    "Draft a 2-sentence intro for Kent on a panel about AI adoption.",
-    "What does Kent do outside of work?",
+    "Summarize what Kent builds, in three honest bullets.",
+    "Pitch Kent's AI Vibe Coding course to a skeptical CTO in two sentences.",
+    "What did Kent do before code?",
   ];
   // Playful status lines cycled while the model thinks.
   const THINKING = [
@@ -650,6 +615,6 @@ function Egg() {
 }
 
 Object.assign(window, {
-  SHead, Nav, Hero, About, Numbers, Career, Craftsman, Capabilities, Stack, Work,
+  SHead, Nav, Hero, About, Craft, Method, Craftsman, BeforeCode, Stack, Work,
   Services, Lab, Credentials, Writing, Personal, Contact, Footer, Egg,
 });

@@ -459,6 +459,31 @@ function HeroPortrait({ src }) {
   );
 }
 
+/* ---------- method step scrub ----------
+   Scroll-scrubbed reveal for the "How I build" steps: a progress line draws
+   down the rail while each step fades/slides in, tied to scroll position.
+   No-op (steps stay visible via CSS defaults) without GSAP or with PRM. */
+function useStepScrub() {
+  const ref = _mRef(null);
+  _mEffect(() => {
+    const el = ref.current;
+    const G = window.gsap, ST = window.ScrollTrigger;
+    if (!el || !G || !ST || PRM) return;
+    G.registerPlugin(ST);
+    const line = el.querySelector(".mt-line i");
+    const steps = el.querySelectorAll(".mt-step");
+    const tl = G.timeline({
+      scrollTrigger: { trigger: el, start: "top 72%", end: "bottom 55%", scrub: 0.6 },
+    });
+    if (line) tl.fromTo(line, { scaleY: 0 }, { scaleY: 1, ease: "none", duration: steps.length }, 0);
+    steps.forEach((s, i) => {
+      tl.fromTo(s, { opacity: 0.14, x: -16 }, { opacity: 1, x: 0, ease: "none", duration: 0.85 }, i);
+    });
+    return () => { if (tl.scrollTrigger) tl.scrollTrigger.kill(); tl.kill(); };
+  }, []);
+  return ref;
+}
+
 /* split a string into per-letter spans for stagger animation */
 function SplitText({ text, className = "" }) {
   const chars = String(text).split("");
@@ -475,5 +500,6 @@ function SplitText({ text, className = "" }) {
 
 Object.assign(window, {
   useReveal, useCountUp, useSeen, useScrollProgress, useNavOnDark,
-  useMagnetic, Magnetic, HeroReveal, HeroPortrait, SplitText, PRM_MOTION: PRM,
+  useMagnetic, Magnetic, HeroReveal, HeroPortrait, SplitText, useStepScrub,
+  PRM_MOTION: PRM,
 });

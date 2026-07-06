@@ -6,8 +6,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "dir": "a",
   "accent": "#C7F94B",
   "density": "roomy",
-  "tagline": 1,
-  "showNumbers": true,
+  "tagline": 0,
   "showLab": true
 }/*EDITMODE-END*/;
 
@@ -69,12 +68,12 @@ function App() {
       <div className="seam"><div className="seam-rule" /></div>
 
       <div className="darkzone">
-        {t.showNumbers && <Numbers />}
-        <Career />
-        <Craftsman />
-        <Capabilities />
-        <Stack />
+        <Craft />
         <Work />
+        <Method />
+        <Craftsman />
+        <BeforeCode />
+        <Stack />
         <Services />
         {t.showLab && <Lab />}
         <Credentials />
@@ -121,7 +120,6 @@ function App() {
         </TweakSection>
 
         <TweakSection label="Sections">
-          <TweakToggle label="By the numbers" value={t.showNumbers} onChange={(v) => setTweak("showNumbers", v)} />
           <TweakToggle label="Prompt lab" value={t.showLab} onChange={(v) => setTweak("showLab", v)} />
         </TweakSection>
       </TweaksPanel>
