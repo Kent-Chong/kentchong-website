@@ -7,19 +7,38 @@ const BEFORE = [
     years: "2012 — 2018",
     label: "Structures",
     line: "Civil engineer — construction sites, then structural design. Learned that intent only counts once someone can walk into it.",
-    receipts: ["MRT Line 2 · River of Life · KTM Gemas–JB", "5-storey build, Holland Village · 82-pt CONQUAS"],
+    receipts: [
+      "MRT Line 2 · River of Life · KTM Gemas–JB — structural design",
+      "5-storey build, 3 basements · Holland Village, Singapore",
+      "Supervised 12 contractors · 82-pt CONQUAS score",
+      "Mentored junior engineers & interns",
+      "MEng Industrial Mgmt · BEng Civil Engineering",
+    ],
   },
   {
     years: "2018 — 2022",
     label: "Markets",
     line: "International B2B marketing, then real estate — leading a team of seven. Learned that systems only work if a human wants to use them.",
-    receipts: ["Marketed across 15+ countries", "RM120M group sales · 2021"],
+    receipts: [
+      "B2B marketing across 15+ countries",
+      "Exhibited: SIAL Paris · GULFOOD Dubai · FOOD EXPO HK",
+      "Led team of 7 · trained core team of 3",
+      "RM120M group sales · 2021",
+      "Top Project Sales Award — RM24M in one project",
+    ],
   },
   {
     years: "2022 — now",
     label: "Software",
-    line: "The bench I stopped changing. Full stack development, data analytics, and AI coaching at Gruda Technologies and LEAD.",
-    receipts: ["thebingo.ai · client builds · 4 AI tracks"],
+    line: "The bench I stopped changing. Data analyst and full stack developer at Gruda Technologies; AI coach at LEAD. Where building, data, and AI finally converge.",
+    receipts: [
+      "thebingo.ai — conversational BI, live",
+      "Full stack client apps — auth, data models, deploys",
+      "Data pipelines · SQL · Python · Java",
+      "Dashboards — Looker Studio · AWS QuickSight",
+      "AI automation with n8n · production prompt design",
+      "LEAD — 4 certified AI coaching tracks",
+    ],
   },
 ];
 

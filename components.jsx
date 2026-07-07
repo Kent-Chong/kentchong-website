@@ -256,9 +256,10 @@ function Craftsman() {
   );
 }
 
-/* ---------- before code (the decade as a through-line timeline) ----------
-   One horizontal rail, a node per era; clicking a period flashes in the
-   detail card for that era (key remount restarts the CSS animation). */
+/* ---------- before code (the decade as a spinning 3D cube) ----------
+   A three.js cube floats and spins; each face is a career era. Hovering a
+   face stops the cube and projects that era's detail card (keyed remount
+   restarts the flash animation). */
 function BeforeCode() {
   const eras = window.SITE_DATA.BEFORE;
   const [active, setActive] = _cState(0);
@@ -267,29 +268,18 @@ function BeforeCode() {
     <section className="s shell" id="before">
       <SHead idx="06 — Foundation" title={<>Before <em>code</em>.</>} tag="2012 → 2022" />
       <div className="before-intro reveal">
-        <p>Ten years of other benches. Each one pays into this one.</p>
+        <p>Ten years of other benches. Each one pays into this one. Spin the cube — hover a face to open it.</p>
       </div>
-      <div className="before-line reveal" role="tablist" aria-label="Career timeline">
-        <div className="bl-rail" aria-hidden="true" />
-        {eras.map((e, k) => (
-          <button
-            key={k}
-            role="tab"
-            aria-selected={k === active}
-            className={"bl-node" + (k === active ? " is-active" : "")}
-            onClick={() => setActive(k)}
-          >
-            <span className="bl-dot" aria-hidden="true" />
-            <span className="bl-years">{e.years}</span>
-            <span className="bl-label">{e.label}</span>
-          </button>
-        ))}
-      </div>
-      <div className="bf bf-card reveal" key={active} role="tabpanel">
-        <div className="bf-years">{b.years}</div>
-        <div className="bf-label">{b.label}</div>
-        <p>{b.line}</p>
-        <ul>{b.receipts.map((r, j) => <li key={j}>{r}</li>)}</ul>
+      <div className="before-3d reveal">
+        <div className="before-cube">
+          <CareerCube eras={eras} onEra={setActive} />
+        </div>
+        <div className="bf bf-card" key={active} role="status" aria-live="polite">
+          <div className="bf-years">{b.years}</div>
+          <div className="bf-label">{b.label}</div>
+          <p>{b.line}</p>
+          <ul>{b.receipts.map((r, j) => <li key={j}>{r}</li>)}</ul>
+        </div>
       </div>
     </section>
   );

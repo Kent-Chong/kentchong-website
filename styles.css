@@ -554,33 +554,15 @@ section.s + section.s { border-top: 1px solid var(--line-on); }
 .before-intro p { font-family: var(--display); font-weight: var(--display-weight,800);
   text-transform: var(--display-up,none); letter-spacing: var(--display-ls,-0.01em);
   font-size: clamp(22px, 2.4vw, 38px); line-height: 1.05; margin: 0; color: var(--paper-on); max-width: 26ch; }
-/* through-line timeline: one rail, a clickable node per era */
-.before-line {
-  position: relative; display: flex; justify-content: space-between;
-  margin: clamp(30px, 3.5vw, 54px) 0 clamp(24px, 2.8vw, 40px);
-  padding: 0 clamp(6px, 1.5vw, 30px);
+/* 3D career cube on the left, projected detail card on the right */
+.before-3d {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px); align-items: center;
+  margin-top: clamp(30px, 3.5vw, 54px);
 }
-.bl-rail { position: absolute; left: 0; right: 0; top: 7px; height: 2px;
-  background: var(--line-on); }
-.bl-node {
-  position: relative; z-index: 1;
-  background: none; border: 0; padding: 0; cursor: pointer; text-align: left;
-  display: flex; flex-direction: column; gap: 10px;
-  color: var(--mut-on); transition: color 0.25s var(--ease);
-}
-.bl-node .bl-dot { width: 16px; height: 16px; border-radius: 50%;
-  background: var(--bg); border: 2px solid var(--mut-on);
-  transition: border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease); }
-.bl-node .bl-years { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
-  text-transform: uppercase; font-variant-numeric: tabular-nums; }
-.bl-node .bl-label { font-family: var(--display); font-weight: var(--display-weight,800);
-  text-transform: var(--display-up,none); letter-spacing: var(--display-ls,-0.01em);
-  font-size: clamp(17px, 1.6vw, 24px); line-height: 1; }
-.bl-node:hover { color: var(--paper-on); }
-.bl-node:hover .bl-dot { border-color: var(--accent); }
-.bl-node.is-active { color: var(--paper-on); }
-.bl-node.is-active .bl-dot { background: var(--accent); border-color: var(--accent); transform: scale(1.25); }
-.bl-node.is-active .bl-label { color: var(--accent); }
+.before-cube { width: 100%; max-width: 460px; margin: 0 auto; }
+.cube-host { width: 100%; aspect-ratio: 1 / 1; touch-action: none; }
+.cube-host canvas { display: block; }
 
 /* detail card flashes in on every period switch (keyed remount) */
 .bf { background: var(--bg); padding: clamp(26px, 2.6vw, 40px); transition: background 0.3s var(--ease); }
@@ -603,10 +585,9 @@ section.s + section.s { border-top: 1px solid var(--line-on); }
   letter-spacing: 0.12em; text-transform: uppercase; color: var(--mut-on); }
 .bf ul li { display: flex; align-items: center; gap: 9px; }
 .bf ul li::before { content: ""; width: 9px; height: 2px; background: var(--accent); flex: none; }
-@media (max-width: 700px) {
-  .before-line { flex-direction: column; gap: 18px; padding: 0; }
-  .bl-rail { left: 7px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; }
-  .bl-node { flex-direction: row; align-items: center; }
+@media (max-width: 860px) {
+  .before-3d { grid-template-columns: 1fr; gap: 24px; }
+  .before-cube { max-width: 340px; }
 }
 
 /* =============================================================

@@ -498,8 +498,193 @@ function SplitText({ text, className = "" }) {
   );
 }
 
+/* ---------- career cube (06 — Foundation) ----------
+   A floating, slowly spinning three.js cube; each of the 6 faces is a career
+   era (CanvasTexture: years + label), the 3 eras mapped to opposite-face
+   pairs. Hovering a face eases the spin to a stop, lights that face, and
+   reports its era so the section can project the matching detail card. */
+function CareerCube({ eras, onEra }) {
+  const hostRef = _mRef(null);
+
+  _mEffect(() => {
+    const host = hostRef.current;
+    if (!host || typeof THREE === "undefined") return;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    renderer.domElement.style.width = "100%";
+    renderer.domElement.style.height = "100%";
+    host.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
+    camera.position.set(0, 0, 9.5);
+
+    // face texture: dark panel, lime frame + faint grid, mono years, big label
+    const makeFace = (era, hot) => {
+      const c = document.createElement("canvas");
+      c.width = c.height = 512;
+      const g = c.getContext("2d");
+      // BoxGeometry face UVs present this texture rotated 180°; pre-rotate so
+      // the text reads upright on the cube (grid + border are symmetric)
+      g.translate(512, 512);
+      g.scale(-1, -1);
+      g.fillStyle = "#10162B";
+      g.fillRect(0, 0, 512, 512);
+      g.strokeStyle = "rgba(255,255,255,0.05)";
+      g.lineWidth = 1;
+      for (let i = 1; i < 4; i++) {
+        g.beginPath(); g.moveTo(128 * i, 24); g.lineTo(128 * i, 488); g.stroke();
+        g.beginPath(); g.moveTo(24, 128 * i); g.lineTo(488, 128 * i); g.stroke();
+      }
+      g.strokeStyle = hot ? "#ccff00" : "rgba(204,255,0,0.30)";
+      g.lineWidth = hot ? 12 : 4;
+      g.strokeRect(24, 24, 464, 464);
+      g.textAlign = "center";
+      g.fillStyle = hot ? "#ccff00" : "rgba(255,255,255,0.55)";
+      g.font = "600 30px 'JetBrains Mono', monospace";
+      g.fillText(era.years.toUpperCase(), 256, 214);
+      g.fillStyle = hot ? "#ffffff" : "#ccff00";
+      g.font = "800 70px 'Saira Condensed', sans-serif";
+      g.fillText(era.label.toUpperCase(), 256, 300);
+      const tx = new THREE.CanvasTexture(c);
+      tx.anisotropy = 4;
+      return tx;
+    };
+    const FACE_ERA = [0, 1, 2, 0, 1, 2];      // +x,-x,+y,-y,+z,-z
+    const cold = FACE_ERA.map((e) => makeFace(eras[e], false));
+    const hot = FACE_ERA.map((e) => makeFace(eras[e], true));
+    const mats = cold.map((t) => new THREE.MeshBasicMaterial({ map: t }));
+    const geo = new THREE.BoxGeometry(2.2, 2.2, 2.2);
+    const cube = new THREE.Mesh(geo, mats);
+    cube.rotation.set(0.28, -0.42, 0);
+    scene.add(cube);
+
+    const setSize = () => {
+      const r = host.getBoundingClientRect();
+      const s = Math.max(1, r.width);
+      renderer.setSize(s, s, false);
+    };
+    setSize();
+    const ro = new ResizeObserver(setSize);
+    ro.observe(host);
+
+    const el = renderer.domElement;
+    const ray = new THREE.Raycaster();
+    const ptr = new THREE.Vector2();
+    let hovered = -1;
+    let speed = PRM ? 0 : 1, targetSpeed = PRM ? 0 : 1;   // idle auto-spin factor
+    let momX = 0, momY = 0;                               // flick momentum
+    // drag state
+    let dragging = false, moved = false, lastX = 0, lastY = 0, dvX = 0, dvY = 0;
+
+    // light/select a face: highlight it + project its era into the card
+    const light = (face) => {
+      if (face === hovered) return;
+      if (hovered >= 0) { mats[hovered].map = cold[hovered]; mats[hovered].needsUpdate = true; }
+      if (face >= 0) {
+        mats[face].map = hot[face]; mats[face].needsUpdate = true;
+        onEra && onEra(FACE_ERA[face]);
+      }
+      hovered = face;
+    };
+    const faceAt = (e) => {
+      const r = el.getBoundingClientRect();
+      ptr.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+      ptr.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+      ray.setFromCamera(ptr, camera);
+      const hit = ray.intersectObject(cube)[0];
+      return hit ? hit.face.materialIndex : -1;
+    };
+
+    const onMove = (e) => {
+      if (dragging) {
+        const dx = e.clientX - lastX, dy = e.clientY - lastY;
+        cube.rotation.y += dx * 0.01;
+        cube.rotation.x += dy * 0.01;
+        dvX = dx * 0.01; dvY = dy * 0.01;
+        lastX = e.clientX; lastY = e.clientY;
+        if (Math.abs(dx) + Math.abs(dy) > 2) moved = true;
+        return;
+      }
+      // hover: light the face under the cursor + hold the cube still
+      const f = faceAt(e);
+      light(f);
+      targetSpeed = f >= 0 ? 0 : (PRM ? 0 : 1);
+      el.style.cursor = f >= 0 ? "grab" : "default";
+    };
+    const onDown = (e) => {
+      dragging = true; moved = false;
+      lastX = e.clientX; lastY = e.clientY; dvX = dvY = 0;
+      momX = momY = 0; targetSpeed = 0; speed = 0;   // freeze auto-spin while grabbed
+      el.style.cursor = "grabbing";
+      try { el.setPointerCapture(e.pointerId); } catch (_) {}
+    };
+    const onUp = (e) => {
+      if (!dragging) return;
+      dragging = false;
+      try { el.releasePointerCapture(e.pointerId); } catch (_) {}
+      if (moved) {
+        momX = dvX; momY = dvY;                       // flick → momentum spin
+        el.style.cursor = "grab";
+      } else {
+        light(faceAt(e));                             // tap/click → select face
+        targetSpeed = 0;
+        el.style.cursor = "grab";
+      }
+    };
+    const onLeave = () => { if (!dragging) { light(-1); targetSpeed = PRM ? 0 : 1; el.style.cursor = "default"; } };
+
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerdown", onDown);
+    el.addEventListener("pointerup", onUp);
+    el.addEventListener("pointerleave", onLeave);
+    el.style.cursor = "grab";
+    el.style.touchAction = "none";
+
+    let raf = 0;
+    const t0 = performance.now();
+    const frame = (now) => {
+      const t = (now - t0) / 1000;
+      if (dragging) {
+        // rotation is driven directly by the pointer; hold still otherwise
+      } else if (Math.abs(momX) > 0.0004 || Math.abs(momY) > 0.0004) {
+        // flick momentum: keep the user's spin, decaying toward idle
+        cube.rotation.y += momX; cube.rotation.x += momY;
+        momX *= 0.94; momY *= 0.94;
+      } else {
+        momX = momY = 0;
+        speed += (targetSpeed - speed) * 0.08;   // smooth stop / resume
+        cube.rotation.y += 0.006 * speed;
+        cube.rotation.x += 0.0026 * speed;
+        cube.position.y = Math.sin(t * 0.9) * 0.14 * speed;  // float damps with spin
+      }
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerdown", onDown);
+      el.removeEventListener("pointerup", onUp);
+      el.removeEventListener("pointerleave", onLeave);
+      geo.dispose();
+      mats.forEach((m) => m.dispose());
+      cold.concat(hot).forEach((t) => t.dispose());
+      renderer.dispose();
+      if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
+    };
+  }, []);
+
+  return <div className="cube-host" ref={hostRef} aria-hidden="true" />;
+}
+
 Object.assign(window, {
   useReveal, useCountUp, useSeen, useScrollProgress, useNavOnDark,
   useMagnetic, Magnetic, HeroReveal, HeroPortrait, SplitText, useStepScrub,
+  CareerCube,
   PRM_MOTION: PRM,
 });
