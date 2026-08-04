@@ -1,9 +1,13 @@
 {
   "name": "kentchong-website",
   "private": true,
-  "description": "Static site; Netlify function deps only (no build step).",
+  "description": "Static site; esbuild transforms the .jsx sources into build/*.js. No bundling — they stay plain classic scripts sharing global scope.",
+  "scripts": {
+    "build": "esbuild data.jsx tweaks-panel.jsx motion.jsx logo.jsx components.jsx app.jsx --outdir=build --loader:.jsx=jsx --minify-whitespace --minify-syntax --target=es2019"
+  },
   "dependencies": {
     "@netlify/blobs": "^8.1.0",
+    "esbuild": "^0.24.0",
     "google-auth-library": "^10.9.0"
   }
 }

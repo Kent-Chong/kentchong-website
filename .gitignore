@@ -5,6 +5,9 @@ GCP-service_account/
 *.json.key
 service-account*.json
 
+# build output — `npm run build`, regenerated on deploy
+build/
+
 # os / tooling
 .DS_Store
 node_modules/

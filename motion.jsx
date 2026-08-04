@@ -503,12 +503,40 @@ function SplitText({ text, className = "" }) {
    era (CanvasTexture: years + label), the 3 eras mapped to opposite-face
    pairs. Hovering a face eases the spin to a stop, lights that face, and
    reports its era so the section can project the matching detail card. */
-function CareerCube({ eras, onEra }) {
+
+/* three.js is 656KB and only this section needs it, so it is kept out of the
+   document head and injected on first mount instead (BeforeCode holds the
+   mount back until section 06 scrolls into view). Memoised — one script, one
+   fetch, however many cubes ask for it. */
+let _threePromise = null;
+function loadThree() {
+  if (typeof THREE !== "undefined") return Promise.resolve(true);
+  if (_threePromise) return _threePromise;
+  _threePromise = new Promise((resolve) => {
+    const s = document.createElement("script");
+    s.src = "assets/three.min.js";
+    s.async = true;
+    s.onload = () => resolve(typeof THREE !== "undefined");
+    s.onerror = () => resolve(false);          // no cube beats a broken page
+    document.head.appendChild(s);
+  });
+  return _threePromise;
+}
+
+function CareerCube({ eras, onEra, faceRef }) {
   const hostRef = _mRef(null);
+  const [ready, setReady] = _mState(typeof THREE !== "undefined");
+
+  _mEffect(() => {
+    if (ready) return;
+    let alive = true;
+    loadThree().then((ok) => { if (alive && ok) setReady(true); });
+    return () => { alive = false; };
+  }, [ready]);
 
   _mEffect(() => {
     const host = hostRef.current;
-    if (!host || typeof THREE === "undefined") return;
+    if (!host || !ready || typeof THREE === "undefined") return;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
@@ -525,10 +553,6 @@ function CareerCube({ eras, onEra }) {
       const c = document.createElement("canvas");
       c.width = c.height = 512;
       const g = c.getContext("2d");
-      // BoxGeometry face UVs present this texture rotated 180°; pre-rotate so
-      // the text reads upright on the cube (grid + border are symmetric)
-      g.translate(512, 512);
-      g.scale(-1, -1);
       g.fillStyle = "#10162B";
       g.fillRect(0, 0, 512, 512);
       g.strokeStyle = "rgba(255,255,255,0.05)";
@@ -577,6 +601,8 @@ function CareerCube({ eras, onEra }) {
     let momX = 0, momY = 0;                               // flick momentum
     // drag state
     let dragging = false, moved = false, lastX = 0, lastY = 0, dvX = 0, dvY = 0;
+    // snap state (driven by the career line)
+    let snapping = false, snapX = 0, snapY = 0;
 
     // light/select a face: highlight it + project its era into the card
     const light = (face) => {
@@ -597,6 +623,42 @@ function CareerCube({ eras, onEra }) {
       return hit ? hit.face.materialIndex : -1;
     };
 
+    /* --- snap-to-era, called by the career line ---
+       Each era appears on two opposite faces (see FACE_ERA); we pick the one
+       that reaches the camera on a pure Y-axis turn, so a snap reads as one
+       clean quarter-turn rather than a tumble:
+         era 0 → face 0 (+x) at y = -π/2
+         era 1 → face 4 (+z) at y = 0
+         era 2 → face 5 (-z) at y = π
+       Both targets are wrapped to the nearest equivalent angle so the cube
+       always takes the short way round. */
+    const ERA_FACE = [0, 4, 5];
+    const ERA_Y = [-Math.PI / 2, 0, Math.PI];
+    const nearest = (from, to) => {
+      const TAU = Math.PI * 2;
+      let d = (to - from) % TAU;
+      if (d > Math.PI) d -= TAU;
+      if (d < -Math.PI) d += TAU;
+      return from + d;
+    };
+    const snapToEra = (era) => {
+      const face = ERA_FACE[era];
+      if (face == null) return;
+      momX = momY = 0;
+      targetSpeed = 0; speed = 0;
+      snapX = nearest(cube.rotation.x, 0);
+      snapY = nearest(cube.rotation.y, ERA_Y[era]);
+      if (PRM) {
+        cube.rotation.x = snapX; cube.rotation.y = snapY;
+        cube.position.y = 0;
+        snapping = false;
+      } else {
+        snapping = true;
+      }
+      light(face);                 // hot texture + onEra, same path as a click
+    };
+    if (faceRef) faceRef.current = snapToEra;
+
     const onMove = (e) => {
       if (dragging) {
         const dx = e.clientX - lastX, dy = e.clientY - lastY;
@@ -614,7 +676,7 @@ function CareerCube({ eras, onEra }) {
       el.style.cursor = f >= 0 ? "grab" : "default";
     };
     const onDown = (e) => {
-      dragging = true; moved = false;
+      dragging = true; moved = false; snapping = false;   // grabbing beats a snap
       lastX = e.clientX; lastY = e.clientY; dvX = dvY = 0;
       momX = momY = 0; targetSpeed = 0; speed = 0;   // freeze auto-spin while grabbed
       el.style.cursor = "grabbing";
@@ -648,6 +710,16 @@ function CareerCube({ eras, onEra }) {
       const t = (now - t0) / 1000;
       if (dragging) {
         // rotation is driven directly by the pointer; hold still otherwise
+      } else if (snapping) {
+        // ease the picked face round to the front, and settle the float out
+        cube.rotation.x += (snapX - cube.rotation.x) * 0.12;
+        cube.rotation.y += (snapY - cube.rotation.y) * 0.12;
+        cube.position.y += (0 - cube.position.y) * 0.12;
+        if (Math.abs(snapX - cube.rotation.x) < 0.002 &&
+            Math.abs(snapY - cube.rotation.y) < 0.002) {
+          cube.rotation.x = snapX; cube.rotation.y = snapY;
+          snapping = false;
+        }
       } else if (Math.abs(momX) > 0.0004 || Math.abs(momY) > 0.0004) {
         // flick momentum: keep the user's spin, decaying toward idle
         cube.rotation.y += momX; cube.rotation.x += momY;
@@ -666,6 +738,7 @@ function CareerCube({ eras, onEra }) {
 
     return () => {
       cancelAnimationFrame(raf);
+      if (faceRef && faceRef.current === snapToEra) faceRef.current = null;
       ro.disconnect();
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerdown", onDown);
@@ -677,7 +750,7 @@ function CareerCube({ eras, onEra }) {
       renderer.dispose();
       if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
     };
-  }, []);
+  }, [ready]);
 
   return <div className="cube-host" ref={hostRef} aria-hidden="true" />;
 }

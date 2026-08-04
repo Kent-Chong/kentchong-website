@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kent Chong — Full Stack Developer · Data &amp; AI Coach</title>
-  <meta name="description" content="Kent Chong — Full Stack Developer & Data Analyst at Gruda Technologies, AI Coach at LEAD. Web apps built with AI, data analytics, and certified AI training. Greater Kuala Lumpur." />
+  <title>Kent Chong · Full Stack Developer · Data &amp; AI Coach</title>
+  <meta name="description" content="Kent Chong is a Full Stack Developer & Data Analyst at Gruda Technologies and an AI Coach at LEAD. Web apps built with AI, data analytics, and certified AI training. Greater Kuala Lumpur." />
 
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
 
@@ -19,19 +19,19 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <!-- only the weights styles.css actually uses -->
+  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@800&family=Space+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=10" />
+  <link rel="stylesheet" href="styles.css?v=14" />
 
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 
+  <!-- three.min.js is NOT loaded here — CareerCube injects it when section 06 scrolls in -->
   <script src="image-slot.js"></script>
-  <script src="assets/three.min.js"></script>
 </head>
 <body>
   <!-- loading overlay: KENT scramble-decodes in the brush glyphs, CHONG types,
@@ -65,14 +65,16 @@
 
   <div id="root"></div>
 
-  <script src="loader.js?v=7"></script>
+  <script src="loader.js?v=8"></script>
 
-  <!-- order: data → tweaks → motion → logo → components → app -->
-  <script type="text/babel" src="data.jsx?v=5"></script>
-  <script type="text/babel" src="tweaks-panel.jsx?v=5"></script>
-  <script type="text/babel" src="motion.jsx?v=5"></script>
-  <script type="text/babel" src="logo.jsx?v=5"></script>
-  <script type="text/babel" src="components.jsx?v=5"></script>
-  <script type="text/babel" src="app.jsx?v=5"></script>
+  <!-- built by `npm run build` (esbuild, JSX transform only — no bundling).
+       Plain classic scripts: they share global scope and must run in this
+       order. Edit the .jsx sources, then rebuild. -->
+  <script src="build/data.js?v=3"></script>
+  <script src="build/tweaks-panel.js?v=2"></script>
+  <script src="build/motion.js?v=2"></script>
+  <script src="build/logo.js?v=2"></script>
+  <script src="build/components.js?v=3"></script>
+  <script src="build/app.js?v=2"></script>
 </body>
 </html>

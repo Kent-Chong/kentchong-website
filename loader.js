@@ -11,10 +11,10 @@
   // ?slowload (or ?slowload=10) slows every beat for tuning
   var slowM = /slowload(?:=(\d+))?/.exec(location.search);
   var slow = slowM ? (parseInt(slowM[1], 10) || 4) : 1;
-  var TICK = 75 * slow;          // fbridoux cadence
+  var TICK = 58 * slow;          // fbridoux cadence; 22 ticks total ≈ 1.3s scramble
   var LOCK_EVERY = 4;            // ticks per letter lock
   var PRE_TICKS = 6;             // all-scramble ticks before first lock
-  var CARET_HOLD = 2000 * slow;  // caret blinks this long before the swirl
+  var CARET_HOLD = 1300 * slow;  // caret blinks this long before the swirl
   var INK = '#0A0E1A';           // dark cover = var(--bg)
   var done = false, opening = false;
 

@@ -1,5 +1,6 @@
 # Netlify config for the static site + Prompt Lab function.
 [build]
+  command = "npm run build"        # esbuild: *.jsx → build/*.js
   publish = "."                    # static site lives at repo root
   functions = "netlify/functions"  # serverless functions dir
 

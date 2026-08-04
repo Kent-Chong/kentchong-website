@@ -65,7 +65,7 @@ function Hero({ tagline }) {
 
   return (
     <header className="hero" id="top">
-      <HeroReveal src="assets/hero-bg.png" />
+      <HeroReveal src="assets/hero-bg.webp" />
       <div className="hero-veil" />
       <div className="shell" style={{ width: "100%", display: "flex", flexDirection: "column", flex: 1 }}>
         <div className="hero-top">
@@ -102,7 +102,7 @@ function Hero({ tagline }) {
 
         <div className="hero-foot">
           <div>
-            <p className="hero-tagline"><strong>{tagline}</strong> Full stack apps, data analytics, and AI training cohorts — built and taught from Kuala Lumpur.</p>
+            <p className="hero-tagline"><strong>{tagline}</strong> Full stack apps, data analytics, and AI training cohorts, built and taught from Kuala Lumpur.</p>
             <div className="hero-cta-row">
               <a className="btn primary magnetic" href="#work" ref={btnA}><span className="btn-l">See the work</span></a>
               <a className="btn magnetic" href="#craft" ref={btnB}><span className="btn-l">The craft</span></a>
@@ -114,7 +114,7 @@ function Hero({ tagline }) {
           </div>
         </div>
       </div>
-      <HeroPortrait src="assets/kent-portrait.png" />
+      <HeroPortrait src="assets/kent-portrait.webp" />
     </header>
   );
 }
@@ -127,24 +127,24 @@ function About() {
       <div className="about-body">
         <div className="about-main reveal">
           <p className="about-lead">
-            I build software with <span className="accent">AI</span> — and coach people to do the same.
+            I build software with <span className="accent">AI</span>. I coach people to do the same.
           </p>
           <div className="about-text">
             <p>
               My week splits between two benches. At <span className="mark">Gruda Technologies</span> I work as a
-              full stack developer and data analyst — web apps for client businesses, data pipelines, dashboards,
-              and thebingo.ai, an AI-driven analytics platform. At <span className="mark">LEAD</span> I coach
+              full stack developer and data analyst. Web apps for client businesses, data pipelines, dashboards,
+              and thebingo.ai, an AI analytics platform. At <span className="mark">LEAD</span> I coach
               corporate professionals through four certified AI tracks: Automation, Data Science, Vibe Coding,
               and Data Engineering.
             </p>
             <p>
-              I build the way I teach: AI-assisted from the first line. Spec it, prompt it, evaluate it, harden it —
-              <span className="mark"> vibe coding</span> done as engineering, not luck. n8n handles the automation
+              I build the way I teach: AI-assisted from the first line. Spec it, prompt it, evaluate it, harden it.
+              <span className="mark"> Vibe coding</span> done as engineering. n8n handles the automation
               between the apps.
             </p>
             <p>
-              Before code I built other things — rail lines as a <span className="mark">civil engineer</span>,
-              RM120 million in property sales leading a team of seven. That range is the footnote, not the headline:
+              Before code I built other things. Rail lines as a <span className="mark">civil engineer</span>,
+              then RM120 million in property sales leading a team of seven. That range is the footnote here, but
               it's why I can talk to the engineer and the boardroom in the same meeting. The craft I'm mastering
               now is this one, and I'm not changing benches again.
             </p>
@@ -166,7 +166,7 @@ function About() {
 /* ---------- the craft (three pillars) ---------- */
 function Craft() {
   const caps = [
-    { tag: "Build", h: "Full stack web apps, shipped with AI.", p: "Client business apps end to end — frontend, backend, deploy. I vibe code with discipline: spec, prompt, evaluate, harden. n8n automations glue the systems together.", li: ["JavaScript · React · Node", "Vibe coding workflow", "n8n AI automation", "Netlify · serverless"] },
+    { tag: "Build", h: "Full stack web apps, shipped with AI.", p: "Client business apps end to end: frontend, backend, deploy. I vibe code with discipline: spec, prompt, evaluate, harden. n8n automations glue the systems together.", li: ["JavaScript · React · Node", "Vibe coding workflow", "n8n AI automation", "Netlify · serverless"] },
     { tag: "Analyze", h: "Data that survives contact with the business.", p: "Pipelines, validation, dashboards. I write the SQL, design the schema, and own the gap between what stakeholders ask for and what the numbers will actually support. thebingo.ai is this craft, productized.", li: ["SQL · Python", "Looker Studio · QuickSight", "Pipelines & validation", "thebingo.ai"] },
     { tag: "Coach", h: "The method, taught hands-on.", p: "Certified AI training for corporate professionals and senior leaders at LEAD. The wins come from turning theory into something a Monday morning can absorb.", li: ["AI Automation", "AI Data Science & Analytics", "AI Vibe Coding", "AI Data Engineering"] },
   ];
@@ -191,9 +191,9 @@ function Craft() {
 function Method() {
   const steps = [
     { n: "01", h: "Spec",     p: "Write the contract first. What it does, what done means, what can break." },
-    { n: "02", h: "Prompt",   p: "Vibe code against the spec — AI writes fast, I steer. Small pieces, tight loops." },
+    { n: "02", h: "Prompt",   p: "Vibe code against the spec. AI writes fast, I steer. Small pieces, tight loops." },
     { n: "03", h: "Evaluate", p: "Read every line that matters. Test the paths the money and the data travel." },
-    { n: "04", h: "Harden",   p: "Auth, validation, error paths, monitoring — the unglamorous 20% that makes it real." },
+    { n: "04", h: "Harden",   p: "Auth, validation, error paths, monitoring. The unglamorous 20% that makes it real." },
     { n: "05", h: "Ship",     p: "Deploy, instrument, watch. n8n automates whatever repeats." },
   ];
   const ref = useStepScrub();
@@ -203,7 +203,7 @@ function Method() {
       <div className="method">
         <div className="mt-intro reveal">
           <p>
-            "Vibe coding" gets dismissed as luck. Done properly it's a discipline — the AI supplies
+            "Vibe coding" gets dismissed as luck. Done properly it's a discipline. The AI supplies
             speed, the engineer supplies judgment. This is the loop I run on every build, and the
             one I teach in the AI Vibe Coding track.
           </p>
@@ -233,21 +233,21 @@ function Craftsman() {
       <div className="craft">
         <div className="craft-lead reveal">
           <p>
-            I changed materials for ten years.<br />This is the one I'm keeping.
+            I changed materials for seven years.<br />This is the one I'm keeping.
           </p>
         </div>
         <div className="craft-body reveal d1">
           <p>
             The advice to chase what you love gets the order backwards. Passion is the
             <span className="mark"> output</span> of getting genuinely good at something rare and
-            valuable — not the input you start with. So I bet on the work itself: deliberate
+            valuable. It is not the input. So I bet on the work itself: deliberate
             practice, real reps, skills that compound.
           </p>
           <p>
-            For a decade that meant stacking <span className="mark">career capital</span> across
-            structures, sales, and data. Now the capital is spent — on this bench. Building software
-            with AI, making data useful, teaching the method. Same seat every morning, deliberately,
-            for the long term. Depth is the point now.
+            For seven years that meant stacking <span className="mark">career capital</span> across
+            structures, sales, and data. Now the capital is spent, all of it on this bench. Building
+            software with AI, making data useful, teaching the method. Same seat every morning,
+            deliberately, for the long term. Depth is the point now.
           </p>
           <a className="craft-cta" href="articles/craftsman-mindset.html">Read the essay →</a>
         </div>
@@ -256,23 +256,62 @@ function Craftsman() {
   );
 }
 
-/* ---------- before code (the decade as a spinning 3D cube) ----------
+/* ---------- before code (the seven years as a spinning 3D cube) ----------
    A three.js cube floats and spins; each face is a career era. Hovering a
    face stops the cube and projects that era's detail card (keyed remount
    restarts the flash animation). */
+/* the through-line: one marker per era, sharing BeforeCode's `active` state
+   with the cube — clicking a marker turns that face to the front, and
+   hovering a cube face moves the marker. Real buttons, so keyboard and
+   screen-reader support come for free. */
+function CareerLine({ eras, active, onPick }) {
+  const pct = eras.length > 1 ? (active / (eras.length - 1)) * 100 : 0;
+  return (
+    <div className="career-line reveal" role="group" aria-label="Career timeline">
+      <div className="cl-track">
+        <div className="cl-fill" style={{ width: `${pct}%` }} />
+        {eras.map((e, i) => (
+          <button
+            type="button"
+            key={i}
+            className={"cl-mark" + (i === active ? " is-on" : "")}
+            style={{ left: `${eras.length > 1 ? (i / (eras.length - 1)) * 100 : 0}%` }}
+            aria-pressed={i === active}
+            onClick={() => onPick(i)}
+          >
+            <span className="cl-dot" aria-hidden="true" />
+            <span className="cl-year">{e.years.split("—")[0].trim()}</span>
+            <span className="cl-label">{e.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function BeforeCode() {
   const eras = window.SITE_DATA.BEFORE;
   const [active, setActive] = _cState(0);
+  const faceRef = _cRef(null);
+  // three.js only loads once this section is close — see loadThree() in motion.jsx.
+  // Latched, because useSeen's ScrollTrigger path flips back to false on the way
+  // up and we don't want the cube torn down and rebuilt on every pass.
+  const [seenRef, seen] = useSeen(0.05);
+  const [mounted, setMounted] = _cState(false);
+  _cEffect(() => { if (seen) setMounted(true); }, [seen]);
   const b = eras[active];
+  const pick = (i) => { setActive(i); if (faceRef.current) faceRef.current(i); };
   return (
     <section className="s shell" id="before">
-      <SHead idx="06 — Foundation" title={<>Before <em>code</em>.</>} tag="2012 → 2022" />
+      <SHead idx="06 — Foundation" title={<>Before <em>code</em>.</>} tag="2015 → 2022" />
       <div className="before-intro reveal">
-        <p>Ten years of other benches. Each one pays into this one. Spin the cube — hover a face to open it.</p>
+        <p>Seven years of other benches. Each one pays into this one.</p>
+        <p className="bi-hint">Pick a year on the line, or spin the cube and hover a face.</p>
       </div>
+      <CareerLine eras={eras} active={active} onPick={pick} />
       <div className="before-3d reveal">
-        <div className="before-cube">
-          <CareerCube eras={eras} onEra={setActive} />
+        <div className="before-cube" ref={seenRef}>
+          {mounted && <CareerCube eras={eras} onEra={setActive} faceRef={faceRef} />}
         </div>
         <div className="bf bf-card" key={active} role="status" aria-live="polite">
           <div className="bf-years">{b.years}</div>
@@ -318,7 +357,7 @@ function Work() {
           return (
             <Tag className="work reveal" key={i} {...extra}>
               <div className={"thumb" + (w.img ? " has-img" : "")}>
-                {w.img && <img src={w.img} alt={w.title} className="thumb-img" />}
+                {w.img && <img src={w.img} alt={w.title} className="thumb-img" loading="lazy" decoding="async" />}
                 {w.img && <div className="thumb-veil" />}
                 {!w.img && <span className="big-n">{String(i + 1).padStart(2, "0")}</span>}
                 <span className={"stamp" + (live ? " live" : "")}>{w.stamp}</span>
@@ -343,7 +382,7 @@ function Services() {
       <div className="services">
         <div className="svc-intro reveal">
           <p>
-            I take on a small number of engagements at a time — usually one coaching cohort and one build in parallel.
+            I take on a small number of engagements at a time, usually one coaching cohort and one build in parallel.
             If you need a web app built, workflows automated, analytics that actually drive decisions, or a team
             trained to use AI properly, talk to me early.
           </p>
@@ -414,7 +453,7 @@ function Lab() {
         body: JSON.stringify({ prompt }),
       });
       const data = await r.json();
-      const text = data.text || data.error || "// no response — try again.";
+      const text = data.text || data.error || "// no response. try again.";
       clearInterval(phaseTimer.current);
       setLoading(false);
       typeOut(text);
@@ -428,7 +467,7 @@ function Lab() {
     } catch (e) {
       clearInterval(phaseTimer.current);
       setLoading(false);
-      typeOut("// network error — try again in a moment.");
+      typeOut("// network error. try again in a moment.");
     }
   };
   const onKey = (e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") run(); };
@@ -440,8 +479,8 @@ function Lab() {
         <div className="lab-intro reveal">
           <p>
             A small demo: this box calls a language model with context about me. Ask it to summarize my work,
-            draft a pitch for a coaching session, or roast my career path. It's a tiny version of the AI-into-workflow
-            integration I build for clients.
+            draft a pitch for a coaching session, or roast my career path. It's a small version of the AI work
+            I build into client systems.
           </p>
           <p style={{ marginTop: 18, fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--mut-on)" }}>
             Try a preset, or write your own.
@@ -550,13 +589,13 @@ function Contact() {
   const m = useMagnetic(0.18);
   return (
     <section className="s shell contact" id="contact">
-      <img className="contact-wm" src="assets/kc-wordmark-white.png" alt="" aria-hidden="true" draggable="false" />
+      <img className="contact-wm" src="assets/kc-wordmark-white.webp" alt="" aria-hidden="true" draggable="false" />
       <SHead idx="13 — Inbox open" title={<>Let's build <em>something</em>.</>} tag="Get in touch" />
       <h2 className="big reveal">
-        Email <a href="mailto:kennethcmk12@gmail.com" className="magnetic" ref={m}>kennethcmk12@gmail.com</a> — I read every note.
+        Email <a href="mailto:chongminkent@gmail.com" className="magnetic" ref={m}>chongminkent@gmail.com</a>. I read every note.
       </h2>
       <div className="small reveal d1">
-        <div className="lnk"><span className="k">Email</span><a href="mailto:kennethcmk12@gmail.com">kennethcmk12@gmail.com</a></div>
+        <div className="lnk"><span className="k">Email</span><a href="mailto:chongminkent@gmail.com">chongminkent@gmail.com</a></div>
         <div className="lnk"><span className="k">LinkedIn</span><a href="https://www.linkedin.com/in/kent-chong" target="_blank" rel="noreferrer">/in/kent-chong</a></div>
         <div className="lnk"><span className="k">GitHub</span><a href="https://github.com/Kent-Chong" target="_blank" rel="noreferrer">/Kent-Chong</a></div>
         <div className="lnk"><span className="k">Location</span><a>Greater KL</a></div>
@@ -570,7 +609,7 @@ function Footer() {
   return (
     <footer className="foot">
       <div className="kc-wordmark" style={{ gap: 10 }}><KCMark size={26} variant="tile" /><span className="kc-name" style={{ fontSize: 18 }}>Kent Chong</span></div>
-      <div className="easter">psst — type <b>build</b></div>
+      <div className="easter">psst · type <b>build</b></div>
       <div>© {new Date().getFullYear()} · Built by hand</div>
     </footer>
   );
@@ -596,8 +635,8 @@ function Egg() {
       <div className="inner" onClick={(e) => e.stopPropagation()}>
         <h3>You found it.</h3>
         <p>// entered via <span className="key">b</span><span className="key">u</span><span className="key">i</span><span className="key">l</span><span className="key">d</span></p>
-        <p>A note from inside the workshop: this site is hand-built, every line reasoned over — the same way I'd build a data pipeline, a sales motion, or a five-storey commercial building in Holland Village.</p>
-        <p>If you found this and you're hiring, mentoring, or want to build something together — mention <b>"the workshop"</b> when you email <b>kennethcmk12@gmail.com</b>. I'll know.</p>
+        <p>A note from inside the workshop: this site is hand-built, every line reasoned over. Same way I'd build a data pipeline, a sales motion, or a five-storey commercial building in Holland Village.</p>
+        <p>If you found this and you're hiring, mentoring, or want to build something together, mention <b>"the workshop"</b> when you email <b>chongminkent@gmail.com</b>. I'll know.</p>
         <button className="close" onClick={() => setOpen(false)}>Close workshop</button>
       </div>
     </div>
